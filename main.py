@@ -43,22 +43,20 @@ frame_count = 0
 # Create settings class
 # Build menu
 
-
 def set_difficulty(value, difficulty):
     print(value)
     print(difficulty)
 
-
-def run_the_game(player1, player2, planetNum, 
+def run_the_game(play1, play2, planetNum, 
                  allowBlack, allowNakedBlack,
                  remove):
     
-    set_settings(player1, player2, planetNum, 
+    set_settings(play1, play2, planetNum, 
                  allowBlack, allowNakedBlack,
                  remove)
     game_running = True
     while game_running:
-    # Look at every event in the queue
+        # Look at every event in the queue
         for event in pygame.event.get():
             # Did the user hit a key?
             if event.type == KEYDOWN:
@@ -69,8 +67,14 @@ def run_the_game(player1, player2, planetNum,
             elif event.type == QUIT:
                 game_running = False
         screen.fill((0, 0, 0))
-        
         pygame.display.flip()
+
+        # draw player 1
+        # draw player 2
+        # loop over planets and draw each one
+
+        #start player 1 input loop
+
         clock.tick(60)
         print("game done")
         return()
