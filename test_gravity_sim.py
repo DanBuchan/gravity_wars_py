@@ -5,6 +5,14 @@
 # Which is itself adapted from Sohrab Ismail-Beigi
 # http://pascal.sources.ru/games/gravwar2.htm
 # http://appliedphysics.yale.edu/sohrab-ismail-beigi
+
+
+# verse.G = 0.1
+# density: Math.floor((Math.random() * 3) + 2) / 2,
+# radius: (Math.random() * 50) + 20,
+# mass: 0,
+# mass = verse.G * 2 * Math.PI * Math.pow(planets[i].radius,2) * planets[i].density;
+
 import math
 import matplotlib.pyplot as plt
 
