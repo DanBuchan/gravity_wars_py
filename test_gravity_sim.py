@@ -9,33 +9,37 @@ import math
 import matplotlib.pyplot as plt
 
 #probably just some reminders
-x_domain = (-500, 500)
-y_domain = (-500, 500)
+x_play_domain = (-500, 500)
+y_play_domain = (-500, 500)
+x_system_domain = (-1000, 1000)
+y_system_domain = (-1000, 1000)
 
 # we make some objects
 planet1 = {'x': 100,
           'y': 400,
-          'mass': 50}
+          'mass': 25}
 planet2 = {'x': 400,
           'y': 100,
-          'mass': 55}
+          'mass': 25}
 planet3 = {'x': 150,
-          'y': 400,
-          'mass': 55}
+          'y': 200,
+          'mass': 25}
 planet4 = {'x': -150,
           'y': -400,
-          'mass': 55}
+          'mass': 30}
 planet5 = {'x': -30,
           'y': -250,
           'mass': 30}
+planet6 = {'x': -400,
+          'y': 300,
+          'mass': 25}
 
-planet_set = [planet1, planet2, planet3, planet4, planet5]
+planet_set = [planet1, planet2, planet3, planet4, planet5, planet6]
 
 missile = {'x': 0,
            'y': 0,
-           'mass': 1,
-           'velocity_x': 0.005,
-           'velocity_y': 0.005} 
+           'velocity_x': -0.001,
+           'velocity_y': 0.001} 
 
 position_history = {'x': [],
                     'y': []}
@@ -70,9 +74,11 @@ def findTruncateIdx(positions, domain):
             break          
     return(idx)
 
-# Here we simulate 1000 time steps
+# Here we simulate 5mins of playtime at 60fps
+# (5*60*60)
 time = 1
-for i in range(0, 4000):
+
+for i in range(0, 18000):
     missile['x'] += missile['velocity_x'] * time
     missile['y'] += missile['velocity_y'] * time
     forces = calculateForces(missile, planet_set)
@@ -82,11 +88,15 @@ for i in range(0, 4000):
     missile['y'] += missile['velocity_y'] * time
     position_history['x'].append(missile['x'])
     position_history['y'].append(missile['y'])
+    if missile['x'] < x_system_domain[0] or missile['x'] > x_system_domain[1]:
+        break
+    if missile['y'] < x_system_domain[0] or missile['y'] > x_system_domain[1]:
+        break
 
 # Truncate the trajectory history such that we just plot in 
 # the domains
-x_idx = findTruncateIdx(position_history['x'], x_domain)
-y_idx = findTruncateIdx(position_history['y'], y_domain)
+x_idx = findTruncateIdx(position_history['x'], x_play_domain)
+y_idx = findTruncateIdx(position_history['y'], y_play_domain)
 
 truncate_idx = None
 if x_idx:
@@ -104,8 +114,11 @@ if truncate_idx:
     position_history['y'] = position_history['y'][:truncate_idx]
 
 fig, ax = plt.subplots()
-for planet in planet_set:
+ax.set_xlim([-500, 500])
+ax.set_ylim([-500, 500])
+for i, planet in enumerate(planet_set):
     ax.plot(planet['x'], planet['y'], 'o-', linewidth=2)
+    ax.text(planet['x'] + 7, planet['y'] + 7, i+1, fontsize=12)
 
-ax.plot(position_history['x'], position_history['y'], 'o-', linewidth=2)
+ax.plot(position_history['x'], position_history['y'], linewidth=1)
 plt.show()
