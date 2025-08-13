@@ -41,3 +41,7 @@ Modify Setup
 Ones with event horizons should add gravity based on the velocity of the missile that hits them
 2. Turns or simultaneous fire 
 3. net play?
+
+## TODOS:
+
+1. Refactor Player classes to inherit from master player class

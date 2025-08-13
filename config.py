@@ -15,6 +15,15 @@ settings = {
     'MusicVolume': int(config['DEFAULT']['MusicVolume']),
     'SFXVolume': int(config['DEFAULT']['SFXVolume']),
     'Alternate': eval(config['DEFAULT']['Alternate']),
+    'G': float(config['DEFAULT']['G']),
+    'XPlayDomain': (int(config['DEFAULT']['xPlayDomainMin']),
+                      int(config['DEFAULT']['xPlayDomainMax'])),
+    'YPlayDomain': (int(config['DEFAULT']['yPlayDomainMin']),
+                      int(config['DEFAULT']['yPlayDomainMax'])),
+    'XSolarSystemDomain': (int(config['DEFAULT']['xSolarSystemDomainMin']),
+                           int(config['DEFAULT']['xSolarSystemDomainMax'])),
+    'YSolarSystemDomain': (int(config['DEFAULT']['ySolarSystemDomainMin']),
+                           int(config['DEFAULT']['ySolarSystemDomainMax'])),
 }
 
 def set_settings(player1, player2, planetNum, 

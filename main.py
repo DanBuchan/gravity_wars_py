@@ -6,7 +6,7 @@ import time
 
 from config import settings, set_settings
 from menu import *
-from sprites import Player1, Player2, Planet, Blackhole, Missile
+from sprites import *
 # from menu import mainmenu
 from pygame.locals import (
     K_ESCAPE,
@@ -28,23 +28,10 @@ clock = pygame.time.Clock()
 # hit_event_horizon = pygame.mixer.Sound("")
 screen = pygame.display.set_mode([settings['ScreenWidth'],
                                   settings['ScreenHeight']])
-
-# Instantiate players.
-player1 = Player1()
-player2 = Player2()
-
-planets = pygame.sprite.Group()
-missiles = pygame.sprite.Group()
-all_sprites = pygame.sprite.Group()
-all_sprites.add(player1)
-all_sprites.add(player2)
-
 running = True
 frame_count = 0
 
-# Create settings class
 # Build menu
-
 def run_the_game(play1, play2, planetNum, 
                  allowBlack, allowNakedBlack,
                  remove, alternate):
@@ -52,7 +39,15 @@ def run_the_game(play1, play2, planetNum,
     set_settings(play1, play2, planetNum, 
                  allowBlack, allowNakedBlack,
                  remove, alternate)
+    print(settings)
+
     game_running = True
+    generate_sprites = True
+    player1 = None
+    player2 = None
+    planets = None
+    missiles = None
+    all_sprites = None
     while game_running:
         # Look at every event in the queue
         for event in pygame.event.get():
@@ -64,19 +59,48 @@ def run_the_game(play1, play2, planetNum,
             # Did the user click the window close button? If so, stop the loop.
             elif event.type == QUIT:
                 game_running = False
-        screen.fill((0, 0, 0))
+        if generate_sprites:
+            # Instantiate players.
+            player1 = Player1(settings)
+            player2 = Player2(settings)
+            planets = pygame.sprite.Group()
+            # missiles = pygame.sprite.Group()
+            all_sprites = pygame.sprite.Group()
+            all_sprites.add(player1)
+            all_sprites.add(player2)
+            screen.fill((0, 0, 0))
+            # GENERATE STAR FIELD/BACKGROUND
+            screen.blit(player1.surf, (player1.x, player1.y))
+            screen.blit(player1.canon, (player1.canon_x, player1.canon_y))
+            screen.blit(player2.surf, (player2.x, player2.y))
+            screen.blit(player2.canon, (player2.canon_x, player2.canon_y))
+            
+            planet_count = random.randint(settings['MinPlanets'],
+                                          settings['MaxPlanets'])
+            print(planet_count)
+            accepted_count = 0
+            # while True:
+            tmp_planet = Planet(settings)
+
+                #test planet against all current sprites
+                #if no overlap then add to group and increment
+            #    if accepted_count == planet_count:
+            #        break
+            screen.blit(tmp_planet.circle, (tmp_planet.x, tmp_planet.y))
+            pygame.display.flip()
+            generate_sprites = False
+        # screen.blit(player1.surf, (player1.x, player1.y))
         pygame.display.flip()
-        print(settings)
-        time.sleep(5)
+        time.sleep(2)
         # draw player 1
         # draw player 2
         # loop over planets and draw each one
-
         #start player 1 input loop
 
         clock.tick(60)
         print("game done")
-        return()
+        game_running=False
+    return()
 
 mainmenu = pygame_menu.Menu('Welcome', 640, 512, 
                                      theme=themes.THEME_SOLARIZED)
