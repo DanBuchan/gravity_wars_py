@@ -8,46 +8,41 @@
 
 
 # verse.G = 0.1
-# density: Math.floor((Math.random() * 3) + 2) / 2,
+# density: floor((randon.random() * 3) + 2) / 2,
 # radius: (Math.random() * 50) + 20,
 # mass: 0,
 # mass = verse.G * 2 * Math.PI * Math.pow(planets[i].radius,2) * planets[i].density;
 
 import math
 import matplotlib.pyplot as plt
+import random
 
 #probably just some reminders
 x_play_domain = (-500, 500)
 y_play_domain = (-500, 500)
 x_system_domain = (-1000, 1000)
 y_system_domain = (-1000, 1000)
-
-# we make some objects
-planet1 = {'x': 100,
-          'y': 400,
-          'mass': 25}
-planet2 = {'x': 400,
-          'y': 100,
-          'mass': 25}
-planet3 = {'x': 150,
-          'y': 200,
-          'mass': 25}
-planet4 = {'x': -150,
-          'y': -400,
-          'mass': 30}
-planet5 = {'x': -30,
-          'y': -250,
-          'mass': 30}
-planet6 = {'x': -400,
-          'y': 300,
-          'mass': 25}
-
-planet_set = [planet1, planet2, planet3, planet4, planet5, planet6]
+g = 0.1
+# random.seed(1234)
+def generate_planet(x_bounds, y_bounds, g):
+    planet = {'x': random.randint(x_bounds[0],x_bounds[1]),
+              'y': random.randint(y_bounds[0],y_bounds[1]),
+              'density': math.floor((random.random() * 3) + 2) / 2,
+              'radius': (random.random() * 50) + 20,
+              #'density': 0.75,
+              'mass': None}
+    planet['mass'] = g * 2 * math.pi * planet['radius']**2 * planet['density']
+    return(planet)
+planet_set = []
+for i in range(1, 15):
+    planet_set.append(generate_planet(x_play_domain,
+                                      y_play_domain,
+                                      g))
 
 missile = {'x': 0,
            'y': 0,
-           'velocity_x': -0.001,
-           'velocity_y': 0.001} 
+           'velocity_x': random.random(),
+           'velocity_y': random.random()} 
 
 position_history = {'x': [],
                     'y': []}
