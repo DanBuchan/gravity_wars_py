@@ -34,19 +34,27 @@ def generate_planet(x_bounds, y_bounds, g):
     planet['mass'] = g * 2 * math.pi * planet['radius']**2 * planet['density']
     return(planet)
 planet_set = []
-for i in range(1, 15):
+for i in range(1, 10):
     planet_set.append(generate_planet(x_play_domain,
                                       y_play_domain,
                                       g))
 
-missile = {'x': 0,
-           'y': 0,
-           'velocity_x': random.random(),
-           'velocity_y': random.random()} 
+# var ar = Math.PI * (90 - pl.angle) / 180
+# var vx = Math.cos(ar) * pl.power / 20;
+# var vy = Math.sin(ar) * -pl.power / 20;
+# from player angle set the initial x,y velocities
+def generate_missile(launch_angle, shot_power):
+    missile = {'x': random.randint(x_play_domain[0],-200),
+           'y': random.randint(y_play_domain[0],y_play_domain[1]),
+           'launch_angle': launch_angle,
+           'velocity_x': math.cos(launch_angle) * shot_power,
+           'velocity_y': math.cos(launch_angle) * -shot_power} 
+    return(missile)
+
+missile = generate_missile((math.pi * (90 - random.randint(0,359)) / 180), random.random())
 
 position_history = {'x': [],
                     'y': []}
-
 
 def distance(x, y):
     return math.sqrt(x**2 + y**2)
@@ -79,8 +87,7 @@ def findTruncateIdx(positions, domain):
 
 # Here we simulate 5mins of playtime at 60fps
 # (5*60*60)
-time = 1
-
+time = 2/3
 for i in range(0, 18000):
     missile['x'] += missile['velocity_x'] * time
     missile['y'] += missile['velocity_y'] * time
