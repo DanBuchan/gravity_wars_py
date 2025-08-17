@@ -79,8 +79,8 @@ def run_the_game(play1, play2, planetNum,
                 accept_planet = True
                 for sprite in all_sprites:
                     dist = pygame.math.Vector2(tmp_planet.rect.center[0]+tmp_planet.x, tmp_planet.rect.center[1]+tmp_planet.y).distance_to((sprite.rect.center[0]+sprite.x, sprite.rect.center[1]+sprite.y))
-                    print(dist,tmp_planet.radius, sprite.rect.center[0]+sprite.x, sprite.rect.center[1]+sprite.y, tmp_planet.rect.center)
-                    if dist <= tmp_planet.radius+10:
+                    print(accepted_count, dist,tmp_planet.radius, sprite.rect.center[0]+sprite.x, sprite.rect.center[1]+sprite.y, tmp_planet.rect.center)
+                    if dist <= tmp_planet.radius+15:
                         accept_planet = False
                 if accept_planet:
                     all_sprites.add(tmp_planet)
