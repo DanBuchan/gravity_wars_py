@@ -30,7 +30,7 @@ screen = pygame.display.set_mode([settings['ScreenWidth'],
                                   settings['ScreenHeight']])
 running = True
 frame_count = 0
-
+random.seed(30)
 # Build menu
 def run_the_game(play1, play2, planetNum, 
                  allowBlack, allowNakedBlack,
@@ -70,37 +70,39 @@ def run_the_game(play1, play2, planetNum,
             all_sprites.add(player2)
             screen.fill((0, 0, 0))
             # GENERATE STAR FIELD/BACKGROUND
+            
+            planet_count = random.randint(settings['MinPlanets'],
+                                          settings['MaxPlanets'])
+            accepted_count = 0
+            while True:
+                tmp_planet = Planet(settings)
+                accept_planet = True
+                for sprite in all_sprites:
+                    dist = pygame.math.Vector2(tmp_planet.rect.center[0]+tmp_planet.x, tmp_planet.rect.center[1]+tmp_planet.y).distance_to((sprite.rect.center[0]+sprite.x, sprite.rect.center[1]+sprite.y))
+                    print(dist,tmp_planet.radius, sprite.rect.center[0]+sprite.x, sprite.rect.center[1]+sprite.y, tmp_planet.rect.center)
+                    if dist <= tmp_planet.radius+10:
+                        accept_planet = False
+                if accept_planet:
+                    all_sprites.add(tmp_planet)
+                    screen.blit(tmp_planet.image, (tmp_planet.x, tmp_planet.y))
+                    accepted_count += 1    
+                if accepted_count == planet_count:
+                    break
             screen.blit(player1.surf, (player1.x, player1.y))
             screen.blit(player1.canon, (player1.canon_x, player1.canon_y))
             screen.blit(player2.surf, (player2.x, player2.y))
             screen.blit(player2.canon, (player2.canon_x, player2.canon_y))
             
-            planet_count = random.randint(settings['MinPlanets'],
-                                          settings['MaxPlanets'])
-            print(planet_count)
-            accepted_count = 0
-            # while True:
-            tmp_planet = Planet(settings)
-
-                #test planet against all current sprites
-                #if no overlap then add to group and increment
-            #    if accepted_count == planet_count:
-            #        break
-            screen.blit(tmp_planet.circle, (tmp_planet.x, tmp_planet.y))
             pygame.display.flip()
             generate_sprites = False
-        # screen.blit(player1.surf, (player1.x, player1.y))
         pygame.display.flip()
-        time.sleep(2)
-        # draw player 1
-        # draw player 2
         # loop over planets and draw each one
         #start player 1 input loop
 
         clock.tick(60)
-        print("game done")
-        game_running=False
-    return()
+        # print("game done")
+        #game_running=False
+    #return()
 
 mainmenu = pygame_menu.Menu('Welcome', 640, 512, 
                                      theme=themes.THEME_SOLARIZED)
