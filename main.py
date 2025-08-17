@@ -79,8 +79,10 @@ def run_the_game(play1, play2, planetNum,
                 accept_planet = True
                 for sprite in all_sprites:
                     dist = pygame.math.Vector2(tmp_planet.rect.center[0]+tmp_planet.x, tmp_planet.rect.center[1]+tmp_planet.y).distance_to((sprite.rect.center[0]+sprite.x, sprite.rect.center[1]+sprite.y))
-                    print(accepted_count, dist,tmp_planet.radius, sprite.rect.center[0]+sprite.x, sprite.rect.center[1]+sprite.y, tmp_planet.rect.center)
-                    if dist <= tmp_planet.radius+15:
+                    spacing = player1.sprite_dim_x
+                    if hasattr(sprite, 'radius'):
+                        spacing = sprite.radius+5
+                    if dist <= tmp_planet.radius+spacing:
                         accept_planet = False
                 if accept_planet:
                     all_sprites.add(tmp_planet)
@@ -88,6 +90,8 @@ def run_the_game(play1, play2, planetNum,
                     accepted_count += 1    
                 if accepted_count == planet_count:
                     break
+            
+            
             screen.blit(player1.surf, (player1.x, player1.y))
             screen.blit(player1.canon, (player1.canon_x, player1.canon_y))
             screen.blit(player2.surf, (player2.x, player2.y))
