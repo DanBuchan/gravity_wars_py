@@ -30,7 +30,6 @@ screen = pygame.display.set_mode([settings['ScreenWidth'],
                                   settings['ScreenHeight']])
 running = True
 frame_count = 0
-random.seed(30)
 # Build menu
 def run_the_game(play1, play2, planetNum, 
                  allowBlack, allowNakedBlack,
@@ -59,6 +58,7 @@ def run_the_game(play1, play2, planetNum,
             # Did the user click the window close button? If so, stop the loop.
             elif event.type == QUIT:
                 game_running = False
+        random.seed(settings["Seed"])
         if generate_sprites:
             # Instantiate players.
             player1 = Player1(settings)
@@ -91,7 +91,6 @@ def run_the_game(play1, play2, planetNum,
                 if accepted_count == planet_count:
                     break
             
-            
             screen.blit(player1.surf, (player1.x, player1.y))
             screen.blit(player1.canon, (player1.canon_x, player1.canon_y))
             screen.blit(player2.surf, (player2.x, player2.y))
@@ -99,6 +98,13 @@ def run_the_game(play1, play2, planetNum,
             
             pygame.display.flip()
             generate_sprites = False
+        
+        #blit screen state to saved screen
+        # render ui and await inputs
+        # after inputs blit saved screen back to screen 
+        # animate missiles
+        #https://stackoverflow.com/questions/37976237/saving-modified-screens-in-python-pygame-for-later-use
+
         pygame.display.flip()
         # loop over planets and draw each one
         #start player 1 input loop
@@ -106,7 +112,7 @@ def run_the_game(play1, play2, planetNum,
         clock.tick(60)
         # print("game done")
         #game_running=False
-    #return()
+    return()
 
 mainmenu = pygame_menu.Menu('Welcome', 640, 512, 
                                      theme=themes.THEME_SOLARIZED)

@@ -1,4 +1,5 @@
 import configparser
+import random
 
 config = configparser.ConfigParser()
 config.read('config.ini')
@@ -37,3 +38,4 @@ def set_settings(player1, player2, planetNum,
     settings['NakedBlackholes'] = allowNakedBlack.get_value()
     settings['RemoveTrails'] = remove.get_value()
     settings['Alternate'] = alternate.get_value()
+    settings['Seed'] = int(''.join(str(random.randint(0,9)) for _ in range(12)))
