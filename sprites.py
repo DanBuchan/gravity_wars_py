@@ -22,6 +22,8 @@ class Player1(pygame.sprite.Sprite):
                                 settings['YPlayDomain'][1]-self.sprite_dim_y)
         self.canon_x = self.x+17
         self.canon_y = self.y+3
+        self.angle = 0.0
+        self.velocity = 1.0
         
 # class for player 2
 class Player2(pygame.sprite.Sprite):
@@ -41,6 +43,8 @@ class Player2(pygame.sprite.Sprite):
                                 settings['YPlayDomain'][1]-self.sprite_dim_y)
         self.canon_x = self.x+3
         self.canon_y = self.y+3
+        self.angle = 180.0
+        self.velocity = 1.0
 
 # class for planets
 class Planet(pygame.sprite.Sprite):
