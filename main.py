@@ -3,14 +3,12 @@ import pygame_menu
 from pygame_menu import themes
 import random
 import time
-import pygame_widgets
-from pygame_widgets.textbox import TextBox
-from pygame_widgets.button import Button
 import re
 
 from config import settings, set_settings
 from menu import *
 from sprites import *
+from ui_widgets import *
 # from menu import mainmenu
 from pygame.locals import (
     K_ESCAPE,
@@ -68,44 +66,12 @@ def verify_velocity():
         player1_velocity_input.setText('')
     return None
     
-player1_id = Button(screen, 10, 10, 65, 20, text='Player 1',
-                radius=2, onClick=lambda: None, 
-                borderThickness=2, textColour=(20, 20, 20),
-                borderColour=(200, 200,200), inactiveColour=(220,220,220),
-                hoverColour=(220,220,220), pressedColour=(220, 220, 220),
-                textHAlign="left", hoverBorderColour=(200,200,200),
-                pressedBorderColour=(200,200,200), margin=6,
-                font=pygame.font.SysFont('bold', 16))
-angle_dialogue = Button(screen, 80, 10, 85, 20, text='Angle (0-360)',
-                radius=2, onClick=lambda: None,
-                borderThickness=2, textColour=(20, 20, 20),
-                borderColour=(200, 200,200), inactiveColour=(220,220,220),
-                hoverColour=(220,220,220), pressedColour=(220, 220, 220),
-                textHAlign="left", textVAlign="top", hoverBorderColour=(200,200,200),
-                pressedBorderColour=(200,200,200), margin=5,
-                font=pygame.font.SysFont('bold', 16))
-player1_angle_input = TextBox(screen, 165, 10, 65, 20, fontSize=12,
-                  borderColour=(200, 200,200), textColour=(0, 0, 0),
-                  radius=2, borderThickness=2, onTextChanged=verify_angle,
-                  placeholderText="000.0000")
-player1_angle_input.textOffsetTop = 12 // 3 + 2
-velocity_dialogue = Button(screen, 235, 10, 90, 20, text='Velocity (0-10)',
-                radius=2, onClick=lambda: None,
-                borderThickness=2, textColour=(20, 20, 20),
-                borderColour=(200, 200,200), inactiveColour=(220,220,220),
-                hoverColour=(220,220,220), pressedColour=(220, 220, 220),
-                textHAlign="left", hoverBorderColour=(200,200,200),
-                pressedBorderColour=(200,200,200), margin=5,
-                font=pygame.font.SysFont('bold', 16))
-player1_velocity_input = TextBox(screen, 325, 10, 60, 20, fontSize=12,
-                  borderColour=(200, 200,200), textColour=(20, 20, 20),
-                  radius=2, borderThickness=2,
-                  placeholderText="1.0000", onTextChanged=verify_velocity, )  
-player1_velocity_input.textOffsetTop = 12 // 3 + 2 
-submit_button = Button(screen, settings['ScreenWidth']-60-10, 10, 60, 20, text='Submit',
-                fontSize=14, radius=2, onClick=output, 
-                borderThickness=2)
-
+player1_id = create_text_area(screen, 10, 10, 65, 20, 'Player 1')
+angle_dialogue = create_text_area(screen, 80, 10, 85, 20, 'Angle (0-360)')
+player1_angle_input = create_text_input(screen, 165, 10, 65, 20, '000.0000', verify_angle)
+velocity_dialogue = create_text_area(screen, 235, 10, 90, 20, 'Velocity (0-10)')
+player1_velocity_input = create_text_input(screen, 325, 10, 60, 20, '1.0000', verify_velocity)
+submit_button = create_submit_button(screen, settings['ScreenWidth'], output)
 
 running = True
 frame_count = 0
