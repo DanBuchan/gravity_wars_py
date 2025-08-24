@@ -100,10 +100,19 @@ def run_the_game(play1, play2, planetNum,
             generate_sprites = False
         
         #blit screen state to saved screen
-        # render ui and await inputs
-        # after inputs blit saved screen back to screen 
-        # animate missiles
+        # render p1 ui and await inputs
+        # after inputs blit saved screen back to screen
+        # if alternating animate p1 missiles
+            #blit screen state to saved screen
+            # render p2 ui and await inputs
+            # after inputs blit saved screen back to screen
+            # animate p2 missiles
+        # else render p2 ui and await inputs
+            # after inputs blit saved screen back to screen
+            # animate p1 and p2 missiles
+
         #https://stackoverflow.com/questions/37976237/saving-modified-screens-in-python-pygame-for-later-use
+        # https://pygamewidgets.readthedocs.io/en/latest/
 
         pygame.display.flip()
         # loop over planets and draw each one
