@@ -31,8 +31,6 @@ clock = pygame.time.Clock()
 screen = pygame.display.set_mode([settings['ScreenWidth'],
                                   settings['ScreenHeight']])
 
-number_pattern = re.compile('^[1234567890]*\.*[1234567890]*$')
-
 # Game states
 # 1: generating the sprites
 # 2: generating the player 1 widgets
@@ -136,52 +134,13 @@ def run_the_game(play1, play2, planetNum,
             states['sprite_gen'] = False
             states['p1_widget_gen'] = True
             
-        if states['p1_widget_gen']:
-            def verify_angle():
-                text = player1_angle_input.getText()
-                if len(text) == 0:
-                    return
-                if re.search(number_pattern, text):
-                    value = float(text)
-                    if value < 0:
-                        player1_angle_input.setText('000.0000')
-                    if value >= 360:
-                        player1_angle_input.setText('359.9999')
-                else:
-                    player1_angle_input.setText('')
-                return None
-    
-            def verify_velocity():
-                text = player1_velocity_input.getText()
-                if len(text) == 0:
-                    return
-                if re.search(number_pattern, text):
-                    value = float(text)
-                    if value < 0:
-                        player1_velocity_input.setText('0.0000')
-                    if value > 10:
-                        player1_velocity_input.setText('10.0000')
-                else:
-                    player1_velocity_input.setText('')
-                return None
-            
-            def p1_submit(player, states):
-                # Get text in the textbox
-                if len(player1_angle_input.getText()) > 0:
-                    player.angle_text = player1_angle_input.getText()
-                    player.angle = float(player.angle_text)
-                if len(player1_velocity_input.getText()) > 0:
-                    player.velocity_text = player1_velocity_input.getText()
-                    player.velocity = float(player.velocity_text)
-                states['p1_input'] = False
-                states['p2_widget_gen'] = True
-
+        if states['p1_widget_gen']:            
             player1_id = create_text_area(screen, 10, 10, 65, 20, 'Player 1',(180, 180, 240), (160, 160, 220))
             angle_dialogue = create_text_area(screen, 80, 10, 85, 20, 'Angle (0-360)', (180, 180, 240), (160, 160, 220))
-            player1_angle_input = create_text_input(screen, 165, 10, 65, 20, player1.angle_text, verify_angle, (180, 180, 240), (160, 160, 220))
+            player1_angle_input = create_text_input(screen, 165, 10, 65, 20, player1.angle_text, 0, 360, '000.0000', '359.9999', (180, 180, 240), (160, 160, 220))
             velocity_dialogue = create_text_area(screen, 235, 10, 90, 20, 'Velocity (0-10)', (180, 180, 240), (160, 160, 220))
-            player1_velocity_input = create_text_input(screen, 325, 10, 60, 20, player1.velocity_text, verify_velocity, (180, 180, 240), (160, 160, 220))
-            submit_button = create_submit_button(screen, settings['ScreenWidth'], p1_submit, player1, states, "Submit", (220, 220, 180), (220, 220, 160))
+            player1_velocity_input = create_text_input(screen, 325, 10, 60, 20, player1.velocity_text, 0, 10, '0.0000', '10.0000', (180, 180, 240), (160, 160, 220))
+            submit_button = create_submit_button(screen, settings['ScreenWidth'], player1, states, player1_angle_input, player1_velocity_input, 'p1_input', 'p2_widget_gen', "Submit", (220, 220, 180), (220, 220, 160))
             # create the widgets afresh with the current value
             states['p1_widget_gen'] = False
             states['p1_input'] = True
@@ -191,56 +150,21 @@ def run_the_game(play1, play2, planetNum,
             pygame.display.update()
 
         if states['p2_widget_gen']:
-            def verify_2_angle():
-                text = player2_angle_input.getText()
-                if len(text) == 0:
-                    return
-                if re.search(number_pattern, text):
-                    value = float(text)
-                    if value < 0:
-                        player2_angle_input.setText('000.0000')
-                    if value >= 360:
-                        player2_angle_input.setText('359.9999')
-                else:
-                    player2_angle_input.setText('')
-                return None
-    
-            def verify_2_velocity():
-                text = player2_velocity_input.getText()
-                if len(text) == 0:
-                    return
-                if re.search(number_pattern, text):
-                    value = float(text)
-                    if value < 0:
-                        player2_velocity_input.setText('0.0000')
-                    if value > 10:
-                        player2_velocity_input.setText('10.0000')
-                else:
-                    player2_velocity_input.setText('')
-                return None
-            
-            def p2_submit(player, states):
-                # Get text in the textbox
-                if len(player2_angle_input.getText()) > 0:
-                    player.angle_text = player2_angle_input.getText()
-                    player.angle = float(player.angle_text)
-                if len(player2_velocity_input.getText()) > 0:
-                    player.velocity_text = player2_velocity_input.getText()
-                    player.velocity = float(player.velocity_text)
-                states['p2_input'] = False
-                #HERE WE USE SETTINGS TO DECIDE WHICH MISSILE STATE TO ENTER
-                states['p1_missiles'] = True
-
             player1_id.hide()
             player1_angle_input.hide()
             player1_velocity_input.hide()
             submit_button.hide()
             player2_id = create_text_area(screen, 10, 10, 65, 20, 'Player 2', (240, 180, 180), (220, 160, 160))
             angle_dialogue = create_text_area(screen, 80, 10, 85, 20, 'Angle (0-360)', (240, 180, 180), (220, 160, 160))
-            player2_angle_input = create_text_input(screen, 165, 10, 65, 20, player2.angle_text, verify_angle, (240, 180, 180), (220, 160, 160))
+            player2_angle_input = create_text_input(screen, 165, 10, 65, 20, player2.angle_text, 0, 360, '000.0000', '359.9999', (240, 180, 180), (220, 160, 160))
             velocity_dialogue = create_text_area(screen, 235, 10, 90, 20, 'Velocity (0-10)', (240, 180, 180), (220, 160, 160))
-            player2_velocity_input = create_text_input(screen, 325, 10, 60, 20, player2.velocity_text, verify_velocity, (240, 180, 180), (220, 160, 160))
-            submit_2_button = create_submit_button(screen, settings['ScreenWidth'], p2_submit, player2, states, "Fire", (255, 120, 120), (200, 120, 120))
+            player2_velocity_input = create_text_input(screen, 325, 10, 60, 20, player2.velocity_text, 0, 10, '0.0000', '10.0000', (240, 180, 180), (220, 160, 160))
+            #DECIDE HERE WHICH NEW STATE TO GO TO.
+
+            fire_state = "p1_missiles"
+            if not settings['Alternate']:
+                fire_state = 'both_missiles'
+            submit_2_button = create_submit_button(screen, settings['ScreenWidth'], player2, states, player2_angle_input, player2_velocity_input, 'p2_input', fire_state, "Fire", (255, 120, 120), (200, 120, 120))
             # create the widgets afresh with the current value
             states['p2_widget_gen'] = False
             states['p2_input'] = True
