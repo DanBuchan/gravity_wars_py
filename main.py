@@ -83,7 +83,7 @@ def run_the_game(play1, play2, planetNum,
               }
     while game_running:
         random.seed(settings["Seed"])
-        random.seed(132988714769)
+        # random.seed(132988714769)
         # Look at every event in the queue
         events = pygame.event.get()
         for event in events:
