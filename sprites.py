@@ -19,7 +19,8 @@ class Player1(pygame.sprite.Sprite):
         self.x = random.randint(settings['XPlayDomain'][0],
                                 int(settings['XPlayDomain'][1]/3)-self.sprite_dim_x)
         self.y = random.randint(settings['YPlayDomain'][0],
-                                settings['YPlayDomain'][1]-self.sprite_dim_y)
+                                settings['YPlayDomain'][1]-self.sprite_dim_y)+30
+        #30 offset prevents player sprites overlapping with input UI
         self.canon_x = self.x+17
         self.canon_y = self.y+3
         self.angle_text = '000.0000'
@@ -42,7 +43,7 @@ class Player2(pygame.sprite.Sprite):
         self.x = random.randint(int((settings['XPlayDomain'][1]/3)*2),
                                 settings['XPlayDomain'][1]-self.sprite_dim_x)
         self.y = random.randint(settings['YPlayDomain'][0],
-                                settings['YPlayDomain'][1]-self.sprite_dim_y)
+                                settings['YPlayDomain'][1]-self.sprite_dim_y)+30
         self.canon_x = self.x+3
         self.canon_y = self.y+3
         self.angle_text = '180.0000'

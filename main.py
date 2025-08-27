@@ -30,6 +30,8 @@ clock = pygame.time.Clock()
 # hit_event_horizon = pygame.mixer.Sound("")
 screen = pygame.display.set_mode([settings['ScreenWidth'],
                                   settings['ScreenHeight']])
+area_to_save = pygame.Rect(0, 0, settings['ScreenWidth'], settings['ScreenHeight'])
+temp_screen = pygame.Surface(area_to_save.size)
 
 # Game states
 # 1: generating the sprites
@@ -73,6 +75,7 @@ def run_the_game(play1, play2, planetNum,
               'p1_input': False,
               'p2_widget_gen': False,
               'p2_input': False,
+              'clear_ui': False,
               'p1_missiles': False,
               'p2_missiles': False,
               'both_missiles': False,
@@ -80,6 +83,7 @@ def run_the_game(play1, play2, planetNum,
               }
     while game_running:
         random.seed(settings["Seed"])
+        random.seed(132988714769)
         # Look at every event in the queue
         events = pygame.event.get()
         for event in events:
@@ -130,6 +134,7 @@ def run_the_game(play1, play2, planetNum,
             screen.blit(player2.canon, (player2.canon_x, player2.canon_y))
             
             pygame.display.flip()
+            temp_screen.blit(screen, (0, 0), area_to_save) 
             time.sleep(1)
             states['sprite_gen'] = False
             states['p1_widget_gen'] = True
@@ -159,12 +164,9 @@ def run_the_game(play1, play2, planetNum,
             player2_angle_input = create_text_input(screen, 165, 10, 65, 20, player2.angle_text, 0, 360, '000.0000', '359.9999', (240, 180, 180), (220, 160, 160))
             velocity_dialogue = create_text_area(screen, 235, 10, 90, 20, 'Velocity (0-10)', (240, 180, 180), (220, 160, 160))
             player2_velocity_input = create_text_input(screen, 325, 10, 60, 20, player2.velocity_text, 0, 10, '0.0000', '10.0000', (240, 180, 180), (220, 160, 160))
-            #DECIDE HERE WHICH NEW STATE TO GO TO.
-
-            fire_state = "p1_missiles"
-            if not settings['Alternate']:
-                fire_state = 'both_missiles'
-            submit_2_button = create_submit_button(screen, settings['ScreenWidth'], player2, states, player2_angle_input, player2_velocity_input, 'p2_input', fire_state, "Fire", (255, 120, 120), (200, 120, 120))
+            
+            
+            submit_2_button = create_submit_button(screen, settings['ScreenWidth'], player2, states, player2_angle_input, player2_velocity_input, 'p2_input', 'clear_ui', "Fire", (255, 120, 120), (200, 120, 120))
             # create the widgets afresh with the current value
             states['p2_widget_gen'] = False
             states['p2_input'] = True
@@ -182,9 +184,32 @@ def run_the_game(play1, play2, planetNum,
             # else render p2 ui and await inputs
                 # after inputs blit saved screen back to screen
                 # animate p1 and p2 missiles
-    
+        
+        if states['clear_ui']:
+            screen.blit(temp_screen, (0, 0), area_to_save) 
+            fire_state = "p1_missiles"
+            if not settings['Alternate']:
+                fire_state = 'both_missiles'
+            states[fire_state] = True
+            states['clear_ui'] = False
+
         if states['p1_missiles']:
-            pass
+            print(player1.angle, player1.velocity)
+
+            pygame.display.update()
+            #https://stackoverflow.com/questions/37976237/saving-modified-screens-in-python-pygame-for-later-use
+            # https://pygamewidgets.readthedocs.io/en/latest/
+
+        if states['p2_missiles']:
+            print(player2.angle, player2.velocity)
+
+            pygame.display.update()
+            #https://stackoverflow.com/questions/37976237/saving-modified-screens-in-python-pygame-for-later-use
+            # https://pygamewidgets.readthedocs.io/en/latest/
+        if states['both_missiles']:
+            print(player1.angle, player1.velocity)
+            print(player2.angle, player2.velocity)
+            pygame.display.update()
             #https://stackoverflow.com/questions/37976237/saving-modified-screens-in-python-pygame-for-later-use
             # https://pygamewidgets.readthedocs.io/en/latest/
 
