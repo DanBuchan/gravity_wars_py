@@ -67,9 +67,8 @@ def run_the_game(play1, play2, planetNum,
     game_running = True
     player1 = None
     player2 = None
-    planets = None
-    missiles = None
     all_sprites = None
+    planets = None
     states = {'sprite_gen': True,
               'p1_widget_gen': False,
               'p1_input': False,
@@ -83,7 +82,8 @@ def run_the_game(play1, play2, planetNum,
               }
     while game_running:
         random.seed(settings["Seed"])
-        # random.seed(132988714769)
+        #random.seed(132988714769)
+        random.seed(798970756333)
         # Look at every event in the queue
         events = pygame.event.get()
         for event in events:
@@ -123,6 +123,7 @@ def run_the_game(play1, play2, planetNum,
                         accept_planet = False
                 if accept_planet:
                     all_sprites.add(tmp_planet)
+                    planets.add(tmp_planet)
                     screen.blit(tmp_planet.image, (tmp_planet.x, tmp_planet.y))
                     accepted_count += 1    
                 if accepted_count == planet_count:
@@ -190,12 +191,17 @@ def run_the_game(play1, play2, planetNum,
             fire_state = "p1_missiles"
             if not settings['Alternate']:
                 fire_state = 'both_missiles'
+            missile1 = Missile(player1)
+            missile2 = Missile(player2)
+            screen.blit(missile1.surf, (missile1.x, missile1.y))
+            screen.blit(missile2.surf, (missile2.x, missile2.y))
             states[fire_state] = True
             states['clear_ui'] = False
 
         if states['p1_missiles']:
-            print(player1.angle, player1.velocity)
-
+            #print(player1.angle, player1.velocity)
+            missile1.update_location(planets)
+            screen.blit(missile1.surf, missile1.rect)
             pygame.display.update()
             #https://stackoverflow.com/questions/37976237/saving-modified-screens-in-python-pygame-for-later-use
             # https://pygamewidgets.readthedocs.io/en/latest/

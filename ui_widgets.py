@@ -30,7 +30,7 @@ def create_text_input(screen, x, y, width, height, field_text, min, max, min_tex
             value = float(text)
             if value < min:
                 field.setText(min_text)
-            if value >= max:
+            if value > max:
                 field.setText(max_text)
         else:
             field.setText('')

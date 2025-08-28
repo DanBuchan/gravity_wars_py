@@ -48,7 +48,7 @@ def generate_missile(launch_angle, shot_power):
            'y': random.randint(y_play_domain[0],y_play_domain[1]),
            'launch_angle': launch_angle,
            'velocity_x': math.cos(launch_angle) * shot_power,
-           'velocity_y': math.cos(launch_angle) * -shot_power} 
+           'velocity_y': math.sin(launch_angle) * -shot_power} 
     return(missile)
 
 missile = generate_missile((math.pi * (90 - random.randint(0,359)) / 180), random.random())

@@ -101,9 +101,52 @@ class Planet(pygame.sprite.Sprite):
                                      self.radius, self.planet_colour)
         self.rect = self.image.get_rect()
 
-# class for blackholes
-class Blackhole(pygame.sprite.Sprite):
-    pass
 # class for Missiles
 class Missile(pygame.sprite.Sprite):
+    def __init__(self, player):
+        super(Missile, self).__init__() #
+        # missile should start at the centre of the canon
+        self.x = player.canon_x+2
+        self.y = player.canon_y+1
+        self.ar = math.pi * (90 - player.angle) / 180
+        self.velocity_y = math.cos(self.ar) * -player.velocity /10
+        self.velocity_x = math.sin(self.ar) * player.velocity /10
+        self.surf = pygame.Surface((2, 2))
+        self.surf.fill((230, 230, 230))
+        self.rect = self.surf.get_rect()
+        self.time_step = 2
+    
+    def distance(self, x, y):
+        return math.sqrt(x**2 + y**2)
+    
+    def __calculateForces(self, planets):
+        forces = {'x': 0,
+                  'y': 0,
+                  'l': 0}
+        for planet in planets:
+            #first get the distance from my missile and this planet
+            dx = self.x - planet.x-planet.radius
+            dy = self.y - planet.y-planet.radius
+            phys_dist = self.distance(dx,dy)
+            k = 1/((phys_dist**2) * phys_dist)
+            forces['x'] = forces['x'] - planet.mass * dx * k 
+            forces['y'] = forces['y'] - planet.mass * dy * k
+            forces['l'] = self.distance(forces['x'], forces['y'])  
+        return forces
+
+    def update_location(self, planets):
+        self.x += self.velocity_x * self.time_step
+        self.y += self.velocity_y * self.time_step
+        forces = self.__calculateForces(planets)
+        self.velocity_x += forces['x'] * self.time_step
+        self.velocity_y += forces['y'] * self.time_step
+        self.x += self.velocity_x
+        self.y += self.velocity_y * self.time_step
+        self.rect.x = self.x
+        self.rect.y = self.y
+        # position_history['x'].append(missile['x'])
+        # position_history['y'].append(missile['y'])
+
+# class for blackhole
+class Blackhole(pygame.sprite.Sprite):
     pass
