@@ -83,7 +83,7 @@ def run_the_game(play1, play2, planetNum,
     while game_running:
         random.seed(settings["Seed"])
         #random.seed(132988714769)
-        random.seed(798970756333)
+        #random.seed(798970756333)
         # Look at every event in the queue
         events = pygame.event.get()
         for event in events:
@@ -203,22 +203,22 @@ def run_the_game(play1, play2, planetNum,
             missile1.update_location(planets)
             screen.blit(missile1.surf, missile1.rect)
             pygame.display.update()
-            #https://stackoverflow.com/questions/37976237/saving-modified-screens-in-python-pygame-for-later-use
-            # https://pygamewidgets.readthedocs.io/en/latest/
-
+            # 1. check planet collisions and toggle to next player
+            # 2. Check ship collisions and toggle to end state
+            # 3. Check solarsystems bounds if left display message, then 
+            # 4. Time missle, no missile gets more than 60 seconds.
+            # 5. if erase trails is on blit the saved screen in to place 
+            #.   before toggling
+        
         if states['p2_missiles']:
             print(player2.angle, player2.velocity)
 
             pygame.display.update()
-            #https://stackoverflow.com/questions/37976237/saving-modified-screens-in-python-pygame-for-later-use
-            # https://pygamewidgets.readthedocs.io/en/latest/
         if states['both_missiles']:
             print(player1.angle, player1.velocity)
             print(player2.angle, player2.velocity)
             pygame.display.update()
-            #https://stackoverflow.com/questions/37976237/saving-modified-screens-in-python-pygame-for-later-use
-            # https://pygamewidgets.readthedocs.io/en/latest/
-
+        
         pygame.display.flip()
             # loop over planets and draw each one
             #start player 1 input loop    

@@ -55,7 +55,7 @@ class Player2(pygame.sprite.Sprite):
 class Planet(pygame.sprite.Sprite):
     def __init__(self, settings):
         super(Planet, self).__init__()
-        self.density = math.floor((random.random() * 3) + 2) / 2
+        self.density = math.floor((random.random() * 3) + 2) / 3
         # planet type
         # 1. Small rocky 1/8
         # 2. Rocky/earth-like 3/8
@@ -71,18 +71,23 @@ class Planet(pygame.sprite.Sprite):
         # 15 to 85
         self.radius = random.randint(0, 5) + 20
         if self.planet_type == 2:
+            self.density = math.floor((random.random() * 3) + 2) / 4
             self.planet_colour = random.choice(((225, 115, 60),(130, 225, 125),(125, 180, 220)))
             self.radius = random.randint(21, 45)
         if self.planet_type == 3:
+            self.density = math.floor((random.random() * 3) + 2) / 6
             self.planet_colour = (225, 180, 70)
             self.radius = random.randint(61, 85)
         if self.planet_type == 4:
+            self.density = math.floor((random.random() * 3) + 2) / 6
             self.planet_colour = (225, 180, 70)
             self.radius = random.randint(61, 85)
         if self.planet_type == 5:
+            self.density = math.floor((random.random() * 3) + 2) / 5
             self.planet_colour = random.choice(((155, 190, 155),(155,155,190)))
             self.radius = random.randint(46, 60)
         if self.planet_type == 6:
+            self.density = math.floor((random.random() * 3) + 2) / 5
             self.planet_colour = random.choice(((155, 190, 155),(155,155,190)))
             self.radius = random.randint(46, 60)
         self.mass = settings['G'] * 2 * math.pi * self.radius**2 * self.density
@@ -109,12 +114,12 @@ class Missile(pygame.sprite.Sprite):
         self.x = player.canon_x+2
         self.y = player.canon_y+1
         self.ar = math.pi * (90 - player.angle) / 180
-        self.velocity_y = math.cos(self.ar) * -player.velocity /10
-        self.velocity_x = math.sin(self.ar) * player.velocity /10
+        self.velocity_y = math.cos(self.ar) * -player.velocity / 5
+        self.velocity_x = math.sin(self.ar) * player.velocity / 5
         self.surf = pygame.Surface((2, 2))
         self.surf.fill((230, 230, 230))
         self.rect = self.surf.get_rect()
-        self.time_step = 2
+        self.time_step = 1
     
     def distance(self, x, y):
         return math.sqrt(x**2 + y**2)
