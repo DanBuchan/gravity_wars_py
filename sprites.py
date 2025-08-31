@@ -20,6 +20,7 @@ class Player1(pygame.sprite.Sprite):
                                 int(settings['XPlayDomain'][1]/3)-self.sprite_dim_x)
         self.y = random.randint(settings['YPlayDomain'][0]+30,
                                 settings['YPlayDomain'][1]-self.sprite_dim_y)
+        self.rect.topleft = (self.x, self.y)
         #30 offset prevents player sprites overlapping with input UI
         self.canon_x = self.x+17
         self.canon_y = self.y+3
@@ -44,6 +45,7 @@ class Player2(pygame.sprite.Sprite):
                                 settings['XPlayDomain'][1]-self.sprite_dim_x)
         self.y = random.randint(settings['YPlayDomain'][0]+30,
                                 settings['YPlayDomain'][1]-self.sprite_dim_y)
+        self.rect.topleft = (self.x, self.y)
         self.canon_x = self.x+3
         self.canon_y = self.y+3
         self.angle_text = '180.0000'
@@ -105,6 +107,7 @@ class Planet(pygame.sprite.Sprite):
                                      self.radius,
                                      self.radius, self.planet_colour)
         self.rect = self.image.get_rect()
+        self.rect.topleft = (self.x, self.y)  
 
 # class for Missiles
 class Missile(pygame.sprite.Sprite):
@@ -120,8 +123,21 @@ class Missile(pygame.sprite.Sprite):
         self.surf.fill((230, 230, 230))
         self.rect = self.surf.get_rect()
         self.time_step = 1
+        self.missile_start_time = None
     
-    def distance(self, x, y):
+    def set_starting_location(self, player):
+        overlap = True
+        while True:
+            self.x += self.velocity_x
+            self.y += self.velocity_y
+            if self.x < player.rect.topleft[0]-3 or self.x > player.rect.topright[0]+3:
+                overlap = False
+            if self.y < player.rect.topleft[1]-3 or self.y > player.rect.bottomright[1]+3:
+                overlap = False
+            if not overlap:
+                break
+
+    def __distance(self, x, y):
         return math.sqrt(x**2 + y**2)
     
     def __calculateForces(self, planets):
@@ -132,12 +148,23 @@ class Missile(pygame.sprite.Sprite):
             #first get the distance from my missile and this planet
             dx = self.x - planet.x-planet.radius
             dy = self.y - planet.y-planet.radius
-            phys_dist = self.distance(dx,dy)
+            phys_dist = self.__distance(dx,dy)
             k = 1/((phys_dist**2) * phys_dist)
             forces['x'] = forces['x'] - planet.mass * dx * k 
             forces['y'] = forces['y'] - planet.mass * dy * k
-            forces['l'] = self.distance(forces['x'], forces['y'])  
+            forces['l'] = self.__distance(forces['x'], forces['y'])  
         return forces
+
+    def check_bounds(self, settings):
+        if self.x < settings['XSolarSystemDomain'][0]:
+            return False
+        if self.x > settings['XSolarSystemDomain'][1]:
+            return False
+        if self.y < settings['YSolarSystemDomain'][0]:
+            return False
+        if self.y > settings['YSolarSystemDomain'][1]:
+            return False
+        return True
 
     def update_location(self, planets):
         self.x += self.velocity_x * self.time_step

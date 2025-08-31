@@ -25,6 +25,7 @@ settings = {
                            int(config['DEFAULT']['xSolarSystemDomainMax'])),
     'YSolarSystemDomain': (int(config['DEFAULT']['ySolarSystemDomainMin']),
                            int(config['DEFAULT']['ySolarSystemDomainMax'])),
+    'MissileMaxFlightTime': int(config['DEFAULT']['MissileMaxFlightTime'])
 }
 
 def set_settings(player1, player2, planetNum, 
