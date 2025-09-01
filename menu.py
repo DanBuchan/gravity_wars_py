@@ -12,10 +12,10 @@ def build_menu(mainmenu, settingmenu, settings, run_the_game):
     planetNumber = settingmenu.add.range_slider('Pick Number of Planets',
                           (settings['MinPlanets'],
                            settings['MaxPlanets']), [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], 1)
-    allowBlackholes = settingmenu.add.toggle_switch('Allow Blackholes', settings['Blackholes'], toggleswitch_id='blackholes')
-    allowNakedBlackholes = settingmenu.add.toggle_switch('Allow Naked Blackholes', settings['NakedBlackholes'], toggleswitch_id='nakedblackholes')
+    allowBlackholes = settingmenu.add.toggle_switch('Allow Black holes', settings['Blackholes'], toggleswitch_id='blackholes')
+    allowNakedBlackholes = settingmenu.add.toggle_switch('Allow Naked Singularities', settings['NakedBlackholes'], toggleswitch_id='nakedblackholes')
     removeTrails = settingmenu.add.toggle_switch('Erase Missile Trails', settings['RemoveTrails'], toggleswitch_id='removetrails')
-    alternateTurns = settingmenu.add.toggle_switch('Aternate Turns', settings['Alternate'], toggleswitch_id='alternateturns')
+    alternateTurns = settingmenu.add.toggle_switch('Alternate Turns', settings['Alternate'], toggleswitch_id='alternateturns')
     
     about = pygame_menu.Menu('About', 640, 512, 
                                      theme=themes.THEME_BLUE)
