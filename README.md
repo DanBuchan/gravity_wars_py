@@ -34,11 +34,13 @@ Angles use the following layout for both players.
 
 The game view always shows you all the planets in the solar system and the two players. The complete solar system area simulated is exactly 9 times the size of the game view. 
 
-Planets are your primary obstacle. Each planet gets a random radius and density. The planet's mass, and in turn its gravity, is a function of the radius and density. The smaller, rocky planets are always the most dense. The large gas giants are the least dense. The most common planets are earth-like, medium size planets. Small rocky planets and the gas giants are the least common.
+Planets are your primary obstacle. Each planet gets a random radius and density. The planet's mass, and in turn its gravity, is a function of its radius and density. Smaller, rocky planets are the most dense. Large gas giants are the least dense.
 
-In the settings menu you can choose the numbers of planets that are randomly generated
+Ice giants make up quarter of the planets as do the gas giants. Most common of all are the planets with earth-like masses, making up just less than half the planets. Very small rocky planets are the least common of all.
 
-Alongside planets your can use the settings menu to enable the existence of black holes. Black holes are the most dense objects and come in a variety of sizes. They are much rarer than the other planet types. When a black hole is present they are hard to make out but one clue is that they block the background stars. Black holes come in two varieties those with event horizons and those without (naked singularities). Naked singularities are the rarest of all. Missiles which strike an event horizon will be absorbed by the black hole and cause it to gain mass. Naked singularities can not be hit but gravity is very powerful in their vicinity.
+In the settings menu you can choose the numbers of planets that are randomly generated.
+
+Alongside planets you can use the settings menu to enable the existence of black holes. Black holes are the most dense objects of all and come in a variety of sizes. They are much rarer than the other planet types. When a black hole is present they are hard to make out but one clue is that they will block out the background stars. Black holes come in two varieties those with event horizons and naked singularities. Naked singularities are the rarest of all. When a missiles strikes an event horizon it will be absorbed by the black hole. Naked singularities, which do not have event horizons can not be hit but the exert powerful gravitational forces.
 
 In the settings menu you can choose whether or not your solar systems can included Black Holes or Naked Singularities.
 
