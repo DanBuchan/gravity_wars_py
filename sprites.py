@@ -26,9 +26,10 @@ class Player1(pygame.sprite.Sprite):
         self.canon_x = self.x+17
         self.canon_y = self.y+3
         self.angle_text = '000.0000'
-        self.velocity_text = '1.0000'
+        self.velocity_text = '5.0000'
         self.angle = 0.0
-        self.velocity = 1.0
+        self.velocity = 5.0
+        self.name = settings['Player1Name']
         
 # class for player 2
 class Player2(pygame.sprite.Sprite):
@@ -50,9 +51,10 @@ class Player2(pygame.sprite.Sprite):
         self.canon_x = self.x+3
         self.canon_y = self.y+3
         self.angle_text = '180.0000'
-        self.velocity_text = '1.0000'
+        self.velocity_text = '5.0000'
         self.angle = 180.0
-        self.velocity = 1.0
+        self.velocity = 5.0
+        self.name = settings['Player2Name']
 
 # class for planets
 class Planet(pygame.sprite.Sprite):
@@ -181,7 +183,7 @@ class Missile(pygame.sprite.Sprite):
         # position_history['x'].append(missile['x'])
         # position_history['y'].append(missile['y'])
 
-    def fire_missile(self, screen, planets, settings):
+    def fire_missile(self, screen, planets, settings, player):
         self.update_location(planets)
         screen.blit(self.surf, self.rect)
         pygame.display.update()
@@ -189,14 +191,14 @@ class Missile(pygame.sprite.Sprite):
         collisions = pygame.sprite.spritecollide(self, planets, 
                                                  False, pygame.sprite.collide_circle)
         if collisions:
-            self.message = "The missile hit a planet"
+            self.message = f"{player.name}'s missile hit a planet"
             missile_done = True
         flight_time = time.time() - self.missile_start_time
         if flight_time > settings['MissileMaxFlightTime']:
-            self.message = "The missile ran out of fuel"
+            self.message = f"{player.name}'s missile ran out of fuel"
             missile_done = True
         if not self.check_bounds(settings):
-            self.message = "The missile left solar system"
+            self.message = f"{player.name}'s missile left solar system"
             missile_done = True
         return missile_done
 

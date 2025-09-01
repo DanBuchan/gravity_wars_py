@@ -57,6 +57,9 @@ def create_submit_button(screen, screenwidth, player, states, angle_input, veloc
         if len(velocity_input.getText()) > 0:
             player.velocity_text = velocity_input.getText()
             player.velocity = float(player.velocity_text)
+            if player.velocity == 0.0:
+                player.velocity = 0.00001
+            
         states[this_state] = False
         states[next_state] = True
     submit_button.onClick = submit
