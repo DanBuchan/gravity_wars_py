@@ -106,7 +106,7 @@ class Planet(pygame.sprite.Sprite):
         if self.planet_type == 7:
             self.density = math.floor((random.random() * 3) + 2) / 2
             self.planet_colour = (0,0,0)
-            self.radius = random.randint(46, 85)
+            self.radius = random.randint(21, 85)
         
         self.mass = settings['G'] * 2 * math.pi * self.radius**2 * self.density
         self.x = random.randint(settings['XPlayDomain'][0]+self.radius,
