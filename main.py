@@ -18,6 +18,7 @@ from pygame.locals import (
 
 pygame.mixer.init()
 pygame.init()
+pygame.display.set_caption('Gravity Wars Deluxe')
 clock = pygame.time.Clock()
 
 # maybe we'll load some background music...
@@ -77,8 +78,11 @@ def run_the_game(play1, play2, planetNum,
               'p2_input': False,
               'clear_ui': False,
               'p1_missiles': False,
+              'p1_message': False,
               'p2_missiles': False,
+              'p2_message': False,
               'both_missiles': False,
+              'both_message': False,
               'end_game': False,
               }
     while game_running:
@@ -139,6 +143,7 @@ def run_the_game(play1, play2, planetNum,
             screen.blit(player2.canon, (player2.canon_x, player2.canon_y))
             
             pygame.display.flip()
+            #copy the current state of screen to temp_screen
             temp_screen.blit(screen, (0, 0), area_to_save) 
             time.sleep(1)
             states['sprite_gen'] = False
@@ -185,7 +190,7 @@ def run_the_game(play1, play2, planetNum,
             fire_state = "p1_missiles"
             if not settings['Alternate']:
                 fire_state = 'both_missiles'
-            missile1 = Missile(player1)
+            missile1 = Missile(player1, (190, 190, 255))
             missile1.set_starting_location(player1)
             missile1.missile_start_time = time.time()
             screen.blit(missile1.surf, (missile1.x, missile1.y))
@@ -193,32 +198,19 @@ def run_the_game(play1, play2, planetNum,
             states['clear_ui'] = False
 
         if states['p1_missiles']:
-            #print(player1.angle, player1.velocity)
-            missile1.update_location(planets)
-            screen.blit(missile1.surf, missile1.rect)
-            pygame.display.update()
-            missile_done = False
-            collisions = pygame.sprite.spritecollide(missile1, planets, 
-                                                     False, pygame.sprite.collide_circle)
-            if collisions:
-                print("Missile hits planet")
-                missile_done = True
-            flight_time = time.time() - missile1.missile_start_time
-            if flight_time > settings['MissileMaxFlightTime']:
-                print("Missile ran out of fuel")
-                missile_done = True
-            if not missile1.check_bounds(settings):
-                print("Missile left solar system")
-                missile_done = True
-            
+            missile_done = missile1.fire_missile(screen, planets, settings)
             if missile_done:
                 states['p1_missiles'] = False
-                states['p2_missiles'] = True 
-                missile2 = Missile(player2)
-                missile2.missile_start_time = time.time()
-                missile2.set_starting_location(player2)
-                screen.blit(missile2.surf, (missile2.x, missile2.y))
-
+                states['p1_message'] = True
+                temp_screen.blit(screen, (0, 0), area_to_save)
+                font = pygame.font.SysFont('bold', 32)
+                text = font.render(missile1.message, True, (200,255,200), pygame.SRCALPHA)
+                text.set_alpha()
+                textRect = text.get_rect()
+                textRect.center = (settings['ScreenWidth']/2, settings['ScreenHeight']/2)
+                screen.blit(text, textRect)
+                pygame.display.flip()
+                
             collisions = pygame.sprite.spritecollide(missile1, players, 
                                                      False)
             if collisions:
@@ -230,29 +222,31 @@ def run_the_game(play1, play2, planetNum,
             # 5. if erase trails is on blit the saved screen in to place 
             #.   before toggling
         
+        if states['p1_message']:
+            time.sleep(1)
+            screen.blit(temp_screen, (0, 0), area_to_save)
+            states['p1_message'] = False
+            states['p2_missiles'] = True
+            missile2 = Missile(player2, (255, 200, 200),)
+            missile2.missile_start_time = time.time()
+            missile2.set_starting_location(player2)
+            screen.blit(missile2.surf, (missile2.x, missile2.y))
+
         if states['p2_missiles']:
-            missile2.update_location(planets)
-            screen.blit(missile2.surf, missile2.rect)
-            pygame.display.update()
-            missile_done = False
-            collisions = pygame.sprite.spritecollide(missile2, planets, 
-                                                     False, pygame.sprite.collide_circle)            
-            if collisions:
-                print("Missile hits planet")
-                missile_done = True
-            flight_time = time.time() - missile2.missile_start_time
-            if flight_time > settings['MissileMaxFlightTime']:
-                print("Missile ran out of fuel")
-                missile_done = True
-            if not missile2.check_bounds(settings):
-                print("Missile left solar system")
-                missile_done = True
-            
+            missile_done = missile2.fire_missile(screen, planets, settings)
             if missile_done:
                 states['p2_missiles'] = False
-                states['p1_widget_gen'] = True
-                if not settings['RemoveTrails']:
-                    temp_screen.blit(screen, (0, 0), area_to_save)
+                states['p2_message'] = True
+                temp_screen.blit(screen, (0, 0), area_to_save)
+                font = pygame.font.SysFont('bold', 32)
+                text = font.render(missile2.message, True, (200,255,200), pygame.SRCALPHA)
+                textRect = text.get_rect()
+                textRect.center = (settings['ScreenWidth']/2, settings['ScreenHeight']/2)
+                screen.blit(text, textRect)
+                pygame.display.flip()
+                
+                # if not settings['RemoveTrails']:
+                #     temp_screen.blit(screen, (0, 0), area_to_save)
 
             collisions = pygame.sprite.spritecollide(missile2, players, 
                                                      False)
@@ -261,6 +255,12 @@ def run_the_game(play1, play2, planetNum,
                 states['end_game'] = True
             pygame.display.update()
 
+        if states['p2_message']:
+            time.sleep(1)
+            screen.blit(temp_screen, (0, 0), area_to_save)
+            states['p2_message'] = False
+            states['p1_widget_gen'] = True
+            
         if states['both_missiles']:
             print(player1.angle, player1.velocity)
             print(player2.angle, player2.velocity)
@@ -271,11 +271,7 @@ def run_the_game(play1, play2, planetNum,
             return
 
         pygame.display.flip()
-            # loop over planets and draw each one
-            #start player 1 input loop    
         clock.tick(60)
-        # print("game done")
-        #game_running=False
     return()
 
 mainmenu = pygame_menu.Menu('Welcome', 640, 512, 

@@ -1,6 +1,7 @@
 import pygame
 import random
 import math
+import time
 # Player 1 and 2 classes should probably just subclass a main
 # player class
 
@@ -111,7 +112,7 @@ class Planet(pygame.sprite.Sprite):
 
 # class for Missiles
 class Missile(pygame.sprite.Sprite):
-    def __init__(self, player):
+    def __init__(self, player, trail_colour):
         super(Missile, self).__init__() #
         # missile should start at the centre of the canon
         self.x = player.canon_x+2
@@ -119,12 +120,13 @@ class Missile(pygame.sprite.Sprite):
         self.ar = math.pi * (90 - player.angle) / 180
         self.velocity_y = math.cos(self.ar) * -player.velocity / 5
         self.velocity_x = math.sin(self.ar) * player.velocity / 5
-        self.surf = pygame.Surface((2, 2))
-        self.surf.fill((230, 230, 230))
+        self.surf = pygame.Surface((1, 1))
+        self.surf.fill(trail_colour)
         self.rect = self.surf.get_rect()
         self.time_step = 1
         self.missile_start_time = None
-    
+        self.message = ''
+
     def set_starting_location(self, player):
         overlap = True
         while True:
@@ -139,7 +141,7 @@ class Missile(pygame.sprite.Sprite):
 
     def __distance(self, x, y):
         return math.sqrt(x**2 + y**2)
-    
+ 
     def __calculateForces(self, planets):
         forces = {'x': 0,
                   'y': 0,
@@ -178,6 +180,25 @@ class Missile(pygame.sprite.Sprite):
         self.rect.y = self.y
         # position_history['x'].append(missile['x'])
         # position_history['y'].append(missile['y'])
+
+    def fire_missile(self, screen, planets, settings):
+        self.update_location(planets)
+        screen.blit(self.surf, self.rect)
+        pygame.display.update()
+        missile_done = False
+        collisions = pygame.sprite.spritecollide(self, planets, 
+                                                 False, pygame.sprite.collide_circle)
+        if collisions:
+            self.message = "The missile hit a planet"
+            missile_done = True
+        flight_time = time.time() - self.missile_start_time
+        if flight_time > settings['MissileMaxFlightTime']:
+            self.message = "The missile ran out of fuel"
+            missile_done = True
+        if not self.check_bounds(settings):
+            self.message = "The missile left solar system"
+            missile_done = True
+        return missile_done
 
 # class for blackhole
 class Blackhole(pygame.sprite.Sprite):
