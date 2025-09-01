@@ -45,6 +45,7 @@ In the settings menu you can choose whether or not your solar systems can includ
 ## TODO
 
 1. Sound effects for the missiles, launching, traveling, striking planets, striking players and striking black holes
-2. Nicer pixel art menus
-3. Procedural generation of pixel art planet textures
-4. net play 
+2. Package for OSX and win11
+3. Nicer pixel art menus
+4. Procedural generation of pixel art planet textures
+5. net play 
