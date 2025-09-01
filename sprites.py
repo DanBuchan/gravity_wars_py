@@ -68,11 +68,19 @@ class Planet(pygame.sprite.Sprite):
         # 4. Gas giant with ring 1/8
         # 5. Neptune like 1/8
         # 6. Neptune like with ring 1/8
+        # 7. Black hole 1/24
         planet_types = (1, 2, 3, 4, 5, 6)
         self.planet_type = random.choices(planet_types,
                                           (1/8, 3/8, 1/8, 1/8,
                                            1/8, 1/8), k=1)[0]
+        if settings['Blackholes']:
+            planet_types = (1, 2, 3, 4, 5, 6, 7)
+            self.planet_type = random.choices(planet_types,
+                                          (3/24, 9/24, 3/24, 3/24,
+                                           2/24, 3/24, 1/24), k=1)[0]
+        
         self.planet_colour = (200, 200, 200)
+        
         # 15 to 85
         self.radius = random.randint(0, 5) + 20
         if self.planet_type == 2:
@@ -95,6 +103,11 @@ class Planet(pygame.sprite.Sprite):
             self.density = math.floor((random.random() * 3) + 2) / 5
             self.planet_colour = random.choice(((155, 190, 155),(155,155,190)))
             self.radius = random.randint(46, 60)
+        if self.planet_type == 7:
+            self.density = math.floor((random.random() * 3) + 2) / 2
+            self.planet_colour = (0,0,0)
+            self.radius = random.randint(46, 85)
+        
         self.mass = settings['G'] * 2 * math.pi * self.radius**2 * self.density
         self.x = random.randint(settings['XPlayDomain'][0]+self.radius,
                                 settings['XPlayDomain'][1]-self.radius)
@@ -183,15 +196,21 @@ class Missile(pygame.sprite.Sprite):
         # position_history['x'].append(missile['x'])
         # position_history['y'].append(missile['y'])
 
-    def fire_missile(self, screen, planets, settings, player):
-        self.update_location(planets)
+    def fire_missile(self, screen, physics_planets, collision_planets, settings, player):
+        self.update_location(physics_planets)
         screen.blit(self.surf, self.rect)
         pygame.display.update()
         missile_done = False
-        collisions = pygame.sprite.spritecollide(self, planets, 
+        collisions = pygame.sprite.spritecollide(self, collision_planets, 
                                                  False, pygame.sprite.collide_circle)
         if collisions:
-            self.message = f"{player.name}'s missile hit a planet"
+            sprite_type = "planet"
+            if collisions[0].planet_type == 7:
+                 #if we strike a black hole we add to its mass, as a function of
+                 # the missile velocity
+                 collisions[0].mass = collisions[0].mass+(player.velocity*3)
+                 sprite_type = "blackhole"
+            self.message = f"{player.name}'s missile hit a {sprite_type}"
             missile_done = True
         flight_time = time.time() - self.missile_start_time
         if flight_time > settings['MissileMaxFlightTime']:
