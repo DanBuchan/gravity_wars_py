@@ -56,3 +56,5 @@ You can edit various settings in the config.ini file. Max Missile flight time, t
 4. Procedural generation of pixel art planet textures
 5. net play
 6. Music?
+7. Save and input seeds
+8. Refactor players classes to inherit from a parent player class
