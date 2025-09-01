@@ -1,6 +1,6 @@
 # Gravity Wars Redux
 
-This is a python remake of Ed Bartz's old Amiga PD game Gravity Wars. First released in September of 1987. This was the first Amiga game I ever played so it holds something a place in my heart.
+This is a python remake of Ed Bartz's old Amiga PD game Gravity Wars. First released in September of 1987. This was the first Amiga game I ever played so it holds something a place in my heart. You can get it from Aminet at https://aminet.net/package/game/2play/GravityWars
 
 This version includes a number of tweaks and additions largely to make it a little more interesting. But the game as a whole is much the same. One omission is the ability to build your own levels. It seldom results in play fields as interesting as the RNG gods grant us.
 
@@ -48,13 +48,28 @@ In the settings menu you can choose whether or not your solar systems can includ
 
 You can edit various settings in the config.ini file. Max Missile flight time, the gravitational constant and the total bounds of the solar system are probably the only ones worth looking at.
 
+## Installation
+
+Fully portable installation should work with:
+
+```
+git clone https://github.com/DanBuchan/Party_button.git
+pip install -r requirements
+python main.py
+```
+
+Executable packages coming soon.
+
 ## TODO
 
-1. Sound effects for the missiles, launching, traveling, striking planets, striking players and striking black holes
-2. Package for OSX and win11
-3. Nicer pixel art menus
-4. Procedural generation of pixel art planet textures
-5. net play
-6. Music?
-7. Save and input seeds
-8. Refactor players classes to inherit from a parent player class
+1. Add tab and return key behaviours for the UI
+2. Save and input seeds
+3. Sound effects for the missiles, launching, traveling, striking planets, striking players and striking black holes
+4. Package for OSX and win11
+5. Nicer pixel art menus
+6. Procedural generation of pixel art planet textures
+7. net play
+8. Music?
+9. Refactor players classes to inherit from a parent player class
+10. Amiga AGA port
+11. Spectrum Next port
