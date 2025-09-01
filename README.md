@@ -12,9 +12,11 @@ If you wish to play around with the maths implementation then check the included
 
 ## To play
 
-Each player takes it in turn to select a missile firing angle and a velocity for their shot. The first player to strike the other wins. Your previous chosen values are displayed for subsequent shots, you only need to edit the values you wish to change, the previously value will be used if you leave it. Missiles fly for 90 seconds until they run out of fuel.
+Each player takes it in turn to select a missile firing angle and a velocity for their shot. The first player to strike the other wins. Any angle from 0 to 359.99999 is allowed. Any speed from 0.00001 to a max of 10 is valid. Your previous chosen values are displayed for subsequent shots, you only need to edit the values you wish to change, the previously value will be used if you leave it. Missiles fly for 90 seconds until they run out of fuel.
 
 In the settings menu you can control whether or not missile trails persist throughout the game or are erased after each round. Having the trails erased makes the game a little harder. You can also choose to toggle whether you take turns to shoot or fire simultaneously. When playing with simultaneous shots it is possible for the game to end in a draw. When you taking turns Player 1 has a strong first player advantage, this has been left as the default way to play, as with the original Gravity Wars.
+
+While in game you can quit and return to the main menu using the Escape key at anytime. This is useful for quickly generating new solar systems if you don't like anything that is generated
 
 ### Shot angles
 
