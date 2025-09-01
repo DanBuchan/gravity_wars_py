@@ -12,7 +12,7 @@ If you wish to play with the maths then check the included test_gravity_sim.py s
 
 ## To play
 
-Each player takes it in turn to select a missile firing angle and a velocity for their shot. The first player to strike the other wins. You previous selected values are shown on subsequent shots, you only need to edit the values you want to change, the previously value will be used otherwise.
+Each player takes it in turn to select a missile firing angle and a velocity for their shot. The first player to strike the other wins. Your previous selected values are shown on subsequent shots, you only need to edit the values you want to change, the previously value will be used otherwise. Missiles will fly for 90 seconds until they run out of fuel.
 
 In the settings menu you can control whether or not missile trails persist throughout the game or are erased after each round. Having the trails erased makes the game a little harder. You can also choose to toggle whether you take turns or fire simultaneously. When playing with simultaneously shots it is possible to draw. When you take turns player 1 has the advantage, this is the default as with the original Gravity Wars.
 
@@ -32,7 +32,7 @@ Angles use the following layout for both players.
 
 ### The solar system
 
-The game view always shows you all the planets in the solar system and the two players. The complete solar system area simulated is exactly 9 times the size of the game view. 
+The game view always shows you all the planets in the solar system and the two players. The complete solar system area simulated is exactly 9 times the size of the game view. Any missile with sufficient velocity to leave the solar system is gone forever.
 
 Planets are your primary obstacle. Each planet gets a random radius and density. The planet's mass, and in turn its gravity, is a function of its radius and density. Smaller, rocky planets are the most dense. Large gas giants are the least dense.
 
@@ -44,10 +44,15 @@ Alongside planets you can use the settings menu to enable the existence of black
 
 In the settings menu you can choose whether or not your solar systems can included Black Holes or Naked Singularities.
 
+### Config
+
+You can edit various settings in the config.ini file. Max Missile flight time, the gravitational constant and the total bounds of the solar system are probably the only ones worth looking at.
+
 ## TODO
 
 1. Sound effects for the missiles, launching, traveling, striking planets, striking players and striking black holes
 2. Package for OSX and win11
 3. Nicer pixel art menus
 4. Procedural generation of pixel art planet textures
-5. net play 
+5. net play
+6. Music?
