@@ -53,8 +53,9 @@ You can edit various settings in the config.ini file. Max Missile flight time, t
 Fully portable installation should work with:
 
 ```
-git clone https://github.com/DanBuchan/Party_button.git
-pip install -r requirements
+git clone https://github.com/DanBuchan/gravity_wars_redux.git
+cd gravity_wars_redux
+pip install -r requirements.txt
 python main.py
 ```
 
