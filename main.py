@@ -14,6 +14,8 @@ from pygame.locals import (
     K_ESCAPE,
     KEYDOWN,
     QUIT,
+    K_TAB,
+    K_RETURN,
 )
 
 pygame.mixer.init()
@@ -130,6 +132,36 @@ def run_the_game(play1, play2, planetNum,
                 # Was it the Escape key? If so, stop the loop.
                 if event.key == K_ESCAPE:
                     game_running = False
+                if event.key == K_TAB:
+                    # toggle between text input widgets
+                    if states['p1_input']:
+                        if player1_angle_input.selected:
+                            player1_angle_input.selected = False
+                            player1_velocity_input.selected = True
+                        else:
+                            player1_angle_input.selected = True
+                            player1_velocity_input.selected = False
+                    elif states['p2_input']:
+                        if player2_angle_input.selected:
+                            player2_angle_input.selected = False
+                            player2_velocity_input.selected = True
+                        else:
+                            player2_angle_input.selected = True
+                            player2_velocity_input.selected = False
+                if event.key == K_RETURN:
+                    if states['p1_input']:
+                        # fire or go to p2input
+                        states['p1_input'] = False
+                        if settings['Alternate']:
+                            states['clear_ui'] = True
+                        else:
+                            states['p2_widget_gen'] = True
+                    elif states['p2_input']:
+                        states['p2_input'] = False
+                        if settings['Alternate']:
+                            states['clear_ui_2'] = True
+                        else:
+                            states['clear_ui_3'] = True
             # Did the user click the window close button? If so, stop the loop.
             elif event.type == QUIT:
                 game_running = False

@@ -1,14 +1,14 @@
 # Gravity Wars Redux
 
-This is a python remake of Ed Bartz's old Amiga PD game Gravity Wars. First released in September of 1987. This was the first Amiga game I ever played so it holds something a place in my heart. You can get it from Aminet at https://aminet.net/package/game/2play/GravityWars
+This is a python remake of Ed Bartz's old Amiga PD game Gravity Wars v2.0. First released in September of 1987. This was the first Amiga game I ever played so it holds a real place in my heart. You can get it from Aminet at https://aminet.net/package/game/2play/GravityWars
 
 This version includes a number of tweaks and additions largely to make it a little more interesting. But the game as a whole is much the same. One omission is the ability to build your own levels. It seldom results in play fields as interesting as the RNG gods grant us.
 
 The goal of the game is to hit your opponent with your missile, avoiding the planets and using their gravity to your advantage.
 
-The mathematics that drive this version are derived largely from Grav War by Sohrab Ismail-Beigi (currently at Yale if you wish to look him up). You can find the sources for this at, http://pascal.sources.ru/games/gravwar2.htm. The code in Gravity Wars Redux is actually ported from Gravity Wars JS by Eric A Meyer, see: https://gravitywars.meyerweb.com/. This is largely because it was somewhat easier for me to port from Javascript code rather than pascal.
+The mathematics that drive this version are derived largely from Grav War by Sohrab Ismail-Beigi (he's currently at Yale if you wish to look him up). You can find the Pascal sources for his version at, http://pascal.sources.ru/games/gravwar2.htm. The code in Gravity Wars Redux is actually ported from Gravity Wars JS by Eric A Meyer, see: https://gravitywars.meyerweb.com/. This is largely because it was somewhat easier for me to port from Javascript code rather than pascal (didn't fancy learning Pascal just to do this tbh). One big change relative to Gravity Wars is that we recalculate the missile trajectories at every frame rather than at specific time point.
 
-If you wish to play around with the maths implementation then check the included test_gravity_sim.py script. This will simulate multiple centres of gravity and a single missile. Both planetary volumes and collision detection are omitted in this script, but you should get the idea of how the gravitation works.
+If you wish to play around with the maths implementation then check the included test_gravity_sim.py script. This will simulate multiple centres of gravity and a single missile. Planetary volumes and collision detection are omitted in this script, but you should get the idea of how the gravitation works and which constants/variables you can tweak to get differing behaviours.
 
 ## To play
 
@@ -16,7 +16,7 @@ Each player takes it in turn to select a missile firing angle and a velocity for
 
 In the settings menu you can control whether or not missile trails persist throughout the game or are erased after each round. Having the trails erased makes the game a little harder. You can also choose to toggle whether you take turns to shoot or fire simultaneously. When playing with simultaneous shots it is possible for the game to end in a draw. When you taking turns Player 1 has a strong first player advantage, this has been left as the default way to play, as with the original Gravity Wars.
 
-While in game you can quit and return to the main menu using the Escape key at anytime. This is useful for quickly generating new solar systems if you don't like anything that is generated
+While in game you can quit and return to the main menu using the Escape key at anytime. This is useful for quickly generating new solar systems if you don't like what was generated.
 
 ### Shot angles
 
@@ -63,14 +63,13 @@ Executable packages coming soon.
 
 ## TODO
 
-1. Add tab and return key behaviours for the UI
-2. Save and input seeds
-3. Sound effects for the missiles, launching, traveling, striking planets, striking players and striking black holes
-4. Package for OSX and win11
-5. Nicer pixel art menus
-6. Procedural generation of pixel art planet textures
-7. net play
-8. Music?
-9. Refactor players classes to inherit from a parent player class
-10. Amiga AGA port
-11. Spectrum Next port
+1. Save and input seeds
+2. Sound effects for the missiles, launching, traveling, striking planets, striking players and striking black holes
+3. Package for OSX and win11
+4. Nicer pixel art menus
+5. Procedural generation of pixel art planet textures
+6. net play
+7. Music?
+8. Refactor players classes to inherit from a parent player class
+9. Amiga AGA port
+10. Spectrum Next port

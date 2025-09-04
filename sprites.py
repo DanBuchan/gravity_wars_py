@@ -86,7 +86,7 @@ class Planet(pygame.sprite.Sprite):
         if self.planet_type == 2:
             self.density = math.floor((random.random() * 3) + 2) / 4
             self.planet_colour = random.choice(((225, 115, 60),(130, 225, 125),(125, 180, 220)))
-            self.radius = random.randint(21, 45)
+            self.radius = random.randint(25, 45)
         if self.planet_type == 3:
             self.density = math.floor((random.random() * 3) + 2) / 6
             self.planet_colour = (225, 180, 70)
@@ -123,8 +123,8 @@ class Planet(pygame.sprite.Sprite):
                                      self.radius,
                                      self.radius, self.planet_colour)
         self.rect = self.image.get_rect()
-        self.rect.topleft = (self.x, self.y)  
-
+        self.rect.topleft = (self.x, self.y)
+        
 # class for Missiles
 class Missile(pygame.sprite.Sprite):
     def __init__(self, player, trail_colour):

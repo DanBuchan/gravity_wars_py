@@ -19,7 +19,7 @@ def build_menu(mainmenu, settingmenu, settings, run_the_game):
     
     about = pygame_menu.Menu('About', 640, 512, 
                                      theme=themes.THEME_BLUE)
-    ABOUT = "This is a remake of Ed Bartz's Gravity Wars 2. With a couple of additional tweaks"
+    ABOUT = "This is a remake of Ed Bartz's Gravity Wars v2.0. With some additional tweaks"
     about.add.label(ABOUT, max_char=-1, font_size=20)
     
     mainmenu.add.button('Start', run_the_game, player1name, 
