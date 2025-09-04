@@ -4,7 +4,7 @@ from pygame_widgets.textbox import TextBox
 from pygame_widgets.button import Button
 import re
 
-number_pattern = re.compile('^[1234567890]*\.*[1234567890]*$')
+number_pattern = re.compile('^[1234567890\\n]*\.*[1234567890\\n]*$')
 
 def create_text_area(screen, x, y, width, height, dialogue_text, colour, bordercolour):
     return Button(screen,  x, y, width, height, text=dialogue_text,
@@ -24,6 +24,7 @@ def create_text_input(screen, x, y, width, height, field_text, min, max, min_tex
     field.textOffsetTop = 12 // 3 + 2
     def verify():
         text = field.getText()
+        #print(text)
         if len(text) == 0:
             return
         if re.search(number_pattern, text):
@@ -38,8 +39,8 @@ def create_text_input(screen, x, y, width, height, field_text, min, max, min_tex
     field.onTextChanged = verify
     return(field)
 
-def create_submit_button(screen, screenwidth, player, states, angle_input, velocity_input, this_state, next_state, text, colour, bordercolour): 
-    submit_button = Button(screen, screenwidth-60-10, 10, 60, 20, text=text,
+def create_submit_button(screen, location, player, states, angle_input, velocity_input, this_state, next_state, text, colour, bordercolour): 
+    submit_button = Button(screen, location, 10, 60, 20, text=text,
                 fontSize=14, radius=2, onClickParams=[player, states, angle_input, velocity_input], 
                 borderThickness=2,
                 borderColour=bordercolour,

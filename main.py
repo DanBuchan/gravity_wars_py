@@ -78,13 +78,18 @@ def make_a_missile(player, colour):
             
 def run_the_game(play1, play2, planetNum, 
                  allowBlack, allowNakedBlack,
-                 remove, alternate):
+                 remove, alternate, seed):
     
+        
     set_settings(play1, play2, planetNum, 
                  allowBlack, allowNakedBlack,
-                 remove, alternate)
-    print(settings)
-
+                 remove, alternate, seed)
+    if not settings["Seed"]:
+        settings["Seed"] = int(''.join(str(random.randint(0,9)) for _ in range(12)))
+    # settings["Seed"] = "745104140956"
+    random.seed(int(settings["Seed"]))
+    #712812482802
+    
     game_running = True
     player1 = None
     player2 = None
@@ -118,12 +123,10 @@ def run_the_game(play1, play2, planetNum,
               'both_missiles': False,
               'both_message': False,
               'end_game': False,
+
+              'end_wait': False,
               }
     while game_running:
-        random.seed(settings["Seed"])
-        # random.seed(369436146343) #player 5 wins with 17:5
-        # random.seed(383426377442) #p1 38:5 #197:5
-        
         # Look at every event in the queue
         events = pygame.event.get()
         for event in events:
@@ -150,6 +153,14 @@ def run_the_game(play1, play2, planetNum,
                             player2_velocity_input.selected = False
                 if event.key == K_RETURN:
                     if states['p1_input']:
+                        if len(player1_angle_input.getText()) > 0:
+                            player1.angle_text = player1_angle_input.getText()
+                            player1.angle = float(player1.angle_text)
+                        if len(player1_velocity_input.getText()) > 0:
+                            player1.velocity_text = player1_velocity_input.getText()
+                            player1.velocity = float(player1.velocity_text)
+                        if player1.velocity == 0.0:
+                            player1.velocity = 0.00001
                         # fire or go to p2input
                         states['p1_input'] = False
                         if settings['Alternate']:
@@ -157,17 +168,29 @@ def run_the_game(play1, play2, planetNum,
                         else:
                             states['p2_widget_gen'] = True
                     elif states['p2_input']:
+                        if len(player2_angle_input.getText()) > 0:
+                            player2.angle_text = player2_angle_input.getText()
+                            player2.angle = float(player2.angle_text)
+                        if len(player2_velocity_input.getText()) > 0:
+                            player2.velocity_text = player2_velocity_input.getText()
+                            player2.velocity = float(player2.velocity_text)
+                        if player2.velocity == 0.0:
+                            player2.velocity = 0.00001
                         states['p2_input'] = False
                         if settings['Alternate']:
                             states['clear_ui_2'] = True
                         else:
                             states['clear_ui_3'] = True
+                    if states['end_wait']:
+                        states['end_wait'] = False
+                        states['sprite_gen'] = True
             # Did the user click the window close button? If so, stop the loop.
             elif event.type == QUIT:
                 game_running = False
         # Using these ifs to handle game states. Not the best way apparently but it'll do
         if states['sprite_gen']:
             # Instantiate players.
+            print(settings)
             player1 = Player1(settings)
             player2 = Player2(settings)
             players = pygame.sprite.Group()
@@ -235,8 +258,7 @@ def run_the_game(play1, play2, planetNum,
             states['sprite_gen'] = False
             states['p1_widget_gen'] = True
             
-        if states['p1_widget_gen']:  
-            
+        if states['p1_widget_gen']:
             missile1_travelling = True
             missile2_travelling = True
             missile1_done = None
@@ -251,13 +273,21 @@ def run_the_game(play1, play2, planetNum,
             player1_angle_input = create_text_input(screen, 165, 10, 65, 20, player1.angle_text, 0, 360, '000.0000', '359.9999', (180, 180, 240), (160, 160, 220))
             velocity_dialogue = create_text_area(screen, 235, 10, 90, 20, 'Velocity (0-10)', (180, 180, 240), (160, 160, 220))
             player1_velocity_input = create_text_input(screen, 325, 10, 60, 20, player1.velocity_text, 0, 10, '0.0000', '10.0000', (180, 180, 240), (160, 160, 220))
+            
             submit_text = "Submit"
             next_state = 'p2_widget_gen'
+            fire_colour = (120, 255, 120)
+            fire_border_colour = (120, 200, 120)
             if settings["Alternate"]:
                 submit_text = "Fire!"
                 next_state = 'clear_ui'
-            submit_button = create_submit_button(screen, settings['ScreenWidth'], player1, states, player1_angle_input, player1_velocity_input, 'p1_input', next_state, submit_text, (220, 220, 180), (220, 220, 160))
+                fire_colour = (255, 120, 120)
+                fire_border_colour = (200, 120, 120)
+            submit_button = create_submit_button(screen, 390, player1, states, player1_angle_input, player1_velocity_input, 'p1_input', next_state, submit_text, fire_colour, fire_border_colour)
             # create the widgets afresh with the current value
+            #screenwidth-120-10
+            seed_dialogue = create_text_area(screen, settings["ScreenWidth"]-120-10, 10, 120, 20, f"Seed: {settings['Seed']}", (220, 220, 180), (220, 220, 160))
+            
             states['p1_widget_gen'] = False
             states['p1_input'] = True
 
@@ -305,6 +335,9 @@ def run_the_game(play1, play2, planetNum,
             player1_angle_input.hide()
             player1_velocity_input.hide()
             submit_button.hide()
+            angle_dialogue.hide()
+            velocity_dialogue.hide()
+            
             player2_id = create_text_area(screen, 10, 10, 65, 20, 'Player 2', (240, 180, 180), (220, 160, 160))
             angle_dialogue = create_text_area(screen, 80, 10, 85, 20, 'Angle (0-360)', (240, 180, 180), (220, 160, 160))
             player2_angle_input = create_text_input(screen, 165, 10, 65, 20, player2.angle_text, 0, 360, '000.0000', '359.9999', (240, 180, 180), (220, 160, 160))
@@ -313,7 +346,8 @@ def run_the_game(play1, play2, planetNum,
             next_state = 'clear_ui_3'
             if settings["Alternate"]:
                 next_state = 'clear_ui_2'
-            submit_2_button = create_submit_button(screen, settings['ScreenWidth'], player2, states, player2_angle_input, player2_velocity_input, 'p2_input', next_state, "Fire!", (255, 120, 120), (200, 120, 120))
+            submit_2_button = create_submit_button(screen, 390, player2, states, player2_angle_input, player2_velocity_input, 'p2_input', next_state, "Fire!", (255, 120, 120), (200, 120, 120))
+            
             # create the widgets afresh with the current value
             states['p2_widget_gen'] = False
             states['p2_input'] = True
@@ -323,6 +357,12 @@ def run_the_game(play1, play2, planetNum,
             pygame.display.update()
        
         if states['clear_ui_2']:
+            player2_id.hide()
+            player2_angle_input.hide()
+            player2_velocity_input.hide()
+            submit_button.hide()
+            angle_dialogue.hide()
+            velocity_dialogue.hide()
             screen.blit(temp_screen, (0, 0), area_to_save)
             missile2 = make_a_missile(player2,(255, 200, 200))
             states["p2_missiles"] = True
@@ -356,6 +396,12 @@ def run_the_game(play1, play2, planetNum,
             states['p1_widget_gen'] = True
 
         if states['clear_ui_3']:
+            player2_id.hide()
+            player2_angle_input.hide()
+            player2_velocity_input.hide()
+            submit_button.hide()
+            angle_dialogue.hide()
+            velocity_dialogue.hide()
             screen.blit(temp_screen, (0, 0), area_to_save)
             missile1 = make_a_missile(player1,(190, 190, 255))
             missile2 = make_a_missile(player2,(255, 200, 200))
@@ -419,9 +465,10 @@ def run_the_game(play1, play2, planetNum,
         if states['end_game']:
             temp_screen.blit(screen, (0, 0), area_to_save)
             show_a_message((200,255,200), win_message)
-            time.sleep(3)
+            show_a_message((200,255,200), f"Seed: {settings['Seed']}", 25)
+            #time.sleep(2)
             states['end_game'] = False
-            states['sprite_gen'] = True
+            states['end_wait'] = True
             player1 = None
             player2 = None
             players = None
@@ -429,9 +476,18 @@ def run_the_game(play1, play2, planetNum,
             planets = None
             collision_planets = None
             win_message = ''
-            settings['Seed'] = int(''.join(str(random.randint(0,9)) for _ in range(12)))
-            screen.fill((0, 0, 0))
-            
+            local_seed = None
+            if len(seed.get_value()) > 0:
+                local_seed = int(seed.get_value())
+            settings['Seed'] = local_seed
+            if not settings['Seed']:
+                settings['Seed'] = int(''.join(str(random.randint(0,9)) for _ in range(12)))
+            random.seed(int(settings["Seed"]))
+            #screen.fill((0, 0, 0))
+        
+        if states['end_wait']:
+            pass
+
         pygame.display.flip()
         clock.tick(60)
     return()

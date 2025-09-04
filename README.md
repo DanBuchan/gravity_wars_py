@@ -63,13 +63,12 @@ Executable packages coming soon.
 
 ## TODO
 
-1. Save and input seeds
-2. Sound effects for the missiles, launching, traveling, striking planets, striking players and striking black holes
-3. Package for OSX and win11
-4. Nicer pixel art menus
-5. Procedural generation of pixel art planet textures
-6. net play
-7. Music?
-8. Refactor players classes to inherit from a parent player class
-9. Amiga AGA port
-10. Spectrum Next port
+1. Sound effects for the missiles, launching, traveling, striking planets, striking players and striking black holes
+2. Package for OSX and win11
+3. Nicer pixel art menus
+4. Procedural generation of pixel art planet textures
+5. net play
+6. Music?
+7. Refactor players classes to inherit from a parent player class
+8. Amiga AGA port
+9. Spectrum Next port
