@@ -61,14 +61,17 @@ python main.py
 
 Executable packages coming soon.
 
+## Audio Credits
+
+
+
 ## TODO
 
-1. Sound effects for the missiles, launching, traveling, striking planets, striking players and striking black holes
-2. Package for OSX and win11
-3. Nicer pixel art menus
-4. Procedural generation of pixel art planet textures
-5. net play
-6. Music?
-7. Refactor players classes to inherit from a parent player class
-8. Amiga AGA port
-9. Spectrum Next port
+1. Package for OSX and win11
+2. Nicer pixel art menus
+3. Procedural generation of pixel art planet textures
+4. net play
+5. Music?
+6. Refactor players classes to inherit from a parent player class
+7. Amiga AGA port
+8. Spectrum Next port
