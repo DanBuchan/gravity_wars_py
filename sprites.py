@@ -7,7 +7,7 @@ import time
 
 # class for player 1
 class Player1(pygame.sprite.Sprite):
-    def __init__(self, settings):
+    def __init__(self, settings, canon_colour):
         super(Player1, self).__init__()
         self.sprite_dim_x = 25
         self.sprite_dim_y = 11
@@ -16,7 +16,7 @@ class Player1(pygame.sprite.Sprite):
         self.surf.fill((200, 200, 200))
         self.rect = self.surf.get_rect()
         self.canon = pygame.Surface((5,5))
-        self.canon.fill((255,64,64))
+        self.canon.fill(canon_colour)
         self.x = random.randint(settings['XPlayDomain'][0],
                                 int(settings['XPlayDomain'][1]/3)-self.sprite_dim_x)
         self.y = random.randint(settings['YPlayDomain'][0]+30,
@@ -33,7 +33,7 @@ class Player1(pygame.sprite.Sprite):
         
 # class for player 2
 class Player2(pygame.sprite.Sprite):
-    def __init__(self, settings):
+    def __init__(self, settings, canon_colour):
         super(Player2, self).__init__()
         self.sprite_dim_x = 25
         self.sprite_dim_y = 11
@@ -41,7 +41,7 @@ class Player2(pygame.sprite.Sprite):
                                     self.sprite_dim_y))
         self.surf.fill((200, 200, 200))
         self.canon = pygame.Surface((5,5))
-        self.canon.fill((255,64,64))
+        self.canon.fill(canon_colour)
         self.rect = self.surf.get_rect()
         self.x = random.randint(int((settings['XPlayDomain'][1]/3)*2),
                                 settings['XPlayDomain'][1]-self.sprite_dim_x)

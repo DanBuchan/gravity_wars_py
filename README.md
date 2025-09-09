@@ -75,3 +75,5 @@ Executable packages coming soon.
 6. Refactor players classes to inherit from a parent player class
 7. Amiga AGA port
 8. Spectrum Next port
+9. Add SFX for puttering out and leaving the solar system. Maybe planet placement noise, with random placement timings. Make black hole strike noise better (reverse planet strike?)
+10. Randomise player sides, or alternate

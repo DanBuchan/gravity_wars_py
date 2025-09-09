@@ -94,7 +94,7 @@ def run_the_game(play1, play2, planetNum,
                  remove, alternate, seed)
     if not settings["Seed"]:
         settings["Seed"] = int(''.join(str(random.randint(0,9)) for _ in range(12)))
-    settings["Seed"] = "212601209795"
+    #settings["Seed"] = "212601209795"
     random.seed(int(settings["Seed"]))
     #712812482802
     
@@ -219,8 +219,8 @@ def run_the_game(play1, play2, planetNum,
             missile_1_audio_ctl = True
             # Instantiate players.
             print(settings)
-            player1 = Player1(settings)
-            player2 = Player2(settings)
+            player1 = Player1(settings, (64,64,255))
+            player2 = Player2(settings, (255,64,64))
             players = pygame.sprite.Group()
             players.add(player1)
             players.add(player2)
