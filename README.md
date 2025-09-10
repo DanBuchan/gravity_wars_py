@@ -76,4 +76,4 @@ Executable packages coming soon.
 5. Music?
 7. Amiga AGA port
 8. Spectrum Next port
-9. fix puttering effect timing in simultaneous goes, and volume mixing if it happens to play together
+9. fix puttering effect timing, see note in missile sprite class
