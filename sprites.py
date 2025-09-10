@@ -195,10 +195,13 @@ class Missile(pygame.sprite.Sprite):
         if collisions:
             sprite_type = "planet"
             if collisions[0].planet_type == 7:
-                 #if we strike a black hole we add to its mass, as a function of
-                 # the missile velocity
-                 collisions[0].mass = collisions[0].mass+(player.velocity*4)
-                 sprite_type = "black hole"
+                #if we strike a black hole we add to its mass, as a function of
+                # the missile velocity
+                collisions[0].mass = collisions[0].mass+(player.velocity*4)
+                if collisions[0].mass > settings['MaxMass']:
+                    collisions[0].mass = settings['MaxMass']
+                print(collisions[0].mass)
+                sprite_type = "black hole"
             self.message = f"{player.name}'s missile hit a {sprite_type}"
             missile_done = True
         flight_time = time.time() - self.missile_start_time

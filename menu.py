@@ -28,7 +28,8 @@ def build_menu(mainmenu, settingmenu, settings, run_the_game):
                         player2name, planetNumber, 
                         allowBlackholes, 
                         allowNakedBlackholes,
-                        removeTrails, alternateTurns, seed, swapSides)
+                        removeTrails, alternateTurns, seed, swapSides,
+                        settings['MaxMass'])
     mainmenu.add.button('Settings', settings_menu, mainmenu, settingmenu)
     mainmenu.add.button('About', about_menu, mainmenu, about)
     mainmenu.add.button('Quit', pygame_menu.events.EXIT)

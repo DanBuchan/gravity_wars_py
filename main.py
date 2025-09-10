@@ -90,14 +90,15 @@ def make_a_missile(player, colour):
             
 def run_the_game(play1, play2, planetNum, 
                  allowBlack, allowNakedBlack,
-                 remove, alternate, seed, swapSides):
+                 remove, alternate, seed, swapSides, maxMass):
     
         
     set_settings(play1, play2, planetNum, 
                  allowBlack, allowNakedBlack,
-                 remove, alternate, seed, swapSides)
+                 remove, alternate, seed, swapSides, maxMass)
     if not settings["Seed"]:
         settings["Seed"] = int(''.join(str(random.randint(0,9)) for _ in range(12)))
+    settings["Seed"] = 331357458685
     random.seed(int(settings["Seed"]))
     #712812482802
     

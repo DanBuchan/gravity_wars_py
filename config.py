@@ -17,6 +17,7 @@ settings = {
     'SFXVolume': int(config['DEFAULT']['SFXVolume']),
     'Alternate': eval(config['DEFAULT']['Alternate']),
     'G': float(config['DEFAULT']['G']),
+    'MaxMass': int(config['DEFAULT']['MaxMass']),
     'XPlayDomain': (int(config['DEFAULT']['xPlayDomainMin']),
                       int(config['DEFAULT']['xPlayDomainMax'])),
     'YPlayDomain': (int(config['DEFAULT']['yPlayDomainMin']),
@@ -32,7 +33,7 @@ settings = {
 
 def set_settings(player1, player2, planetNum, 
                  allowBlack, allowNakedBlack,
-                 remove, alternate, seed, swapSides):
+                 remove, alternate, seed, swapSides, maxMass):
     settings['Player1Name'] = player1.get_value()
     settings['Player2Name'] = player2.get_value()
     settings['MinPlanets'] = planetNum.get_value()[0]
@@ -42,6 +43,7 @@ def set_settings(player1, player2, planetNum,
     settings['RemoveTrails'] = remove.get_value()
     settings['Alternate'] = alternate.get_value()
     settings['SwapSides'] = swapSides.get_value()
+    settings['MaxMass'] = maxMass
     local_seed = None
     if len(seed.get_value()) > 0:
         local_seed = int(seed.get_value())

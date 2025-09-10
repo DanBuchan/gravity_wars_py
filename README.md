@@ -82,4 +82,4 @@ Whoop by cabled_mess -- https://freesound.org/s/361122/ -- License: Creative Com
 7. Amiga AGA port
 8. Spectrum Next port
 9. fix puttering effect timing, see note in missile sprite class
-10. Blackholes should cap their masses at some point so they can't render the game unplayable
+10. Audio not working right in simultaneous play
