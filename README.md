@@ -14,7 +14,9 @@ If you wish to play around with the maths implementation then check the included
 
 Each player takes it in turn to select a missile firing angle and a velocity for their shot. The first player to strike the other wins. Any angle from 0 to 359.99999 is allowed. Any speed from 0.00001 to a max of 10 is valid. Your previous chosen values are displayed for subsequent shots, you only need to edit the values you wish to change, the previously value will be used if you leave it. Missiles fly for 90 seconds until they run out of fuel.
 
-In the settings menu you can control whether or not missile trails persist throughout the game or are erased after each round. Having the trails erased makes the game a little harder. You can also choose to toggle whether you take turns to shoot or fire simultaneously. When playing with simultaneous shots it is possible for the game to end in a draw. When you taking turns Player 1 has a strong first player advantage, this has been left as the default way to play, as with the original Gravity Wars.
+In the settings menu you can control whether or not missile trails persist throughout the game or are erased after each round. Having the trails erased makes the game a little harder. You can also choose to toggle whether you take turns to shoot or fire simultaneously. When playing with simultaneous shots it is possible for the game to end in a draw. When you taking turns Player 1 has a strong first player advantage. simultaneous shots has been left as the default way to play, but you can toggle thisto play the same way as the original Gravity Wars.
+
+By default player 1 and player 2 will alternate sides as you play a new game. You can play with fixed sides (player 1: left, and player 2: right), by changing this in the settings menu.
 
 While in game you can quit and return to the main menu using the Escape key at anytime. This is useful for quickly generating new solar systems if you don't like what was generated.
 
@@ -72,8 +74,6 @@ Executable packages coming soon.
 3. Procedural generation of pixel art planet textures
 4. net play
 5. Music?
-6. Refactor players classes to inherit from a parent player class
 7. Amiga AGA port
 8. Spectrum Next port
-9. Add SFX for puttering out and leaving the solar system. Maybe planet placement noise, with random placement timings. Make black hole strike noise better (reverse planet strike?)
-10. Randomise player sides, or alternate
+9. fix puttering effect timing in simultaneous goes, and volume mixing if it happens to play together

@@ -27,15 +27,19 @@ clock = pygame.time.Clock()
 # pygame.mixer.music.load("sounds/Apoxode_-_Electric_1.mp3")
 # pygame.mixer.music.play(loops=-1)
 
-blackhole_strike = pygame.mixer.Sound("./audio/blackhole_strike.mp3")
+#blackhole_strike = pygame.mixer.Sound("./audio/blackhole_strike.mp3")
+blackhole_strike = pygame.mixer.Sound("./audio/planet_strike_reverse.mp3")
 missile_launch = pygame.mixer.Sound("./audio/missile_launch.mp3")
 missile_travelling = pygame.mixer.Sound("./audio/missile_travelling.mp3")
+missile_puttering = pygame.mixer.Sound("./audio/missile_puttering.mp3")
 planet_strike = pygame.mixer.Sound("./audio/planet_strike.mp3")
 ship_strike = pygame.mixer.Sound("./audio/ship_strike.mp3")
+
 
 blackhole_strike.set_volume(0.6)
 missile_launch.set_volume(1)
 missile_travelling.set_volume(0.5)
+missile_puttering.set_volume(0.5)
 planet_strike.set_volume(1)
 ship_strike.set_volume(1)
 
@@ -86,19 +90,20 @@ def make_a_missile(player, colour):
             
 def run_the_game(play1, play2, planetNum, 
                  allowBlack, allowNakedBlack,
-                 remove, alternate, seed):
+                 remove, alternate, seed, swapSides):
     
         
     set_settings(play1, play2, planetNum, 
                  allowBlack, allowNakedBlack,
-                 remove, alternate, seed)
+                 remove, alternate, seed, swapSides)
     if not settings["Seed"]:
         settings["Seed"] = int(''.join(str(random.randint(0,9)) for _ in range(12)))
-    #settings["Seed"] = "212601209795"
     random.seed(int(settings["Seed"]))
     #712812482802
     
+    # Many of theses booleans could live in settings object you know
     game_running = True
+    player1_left = False
     player1 = None
     player2 = None
     players = None
@@ -210,6 +215,14 @@ def run_the_game(play1, play2, planetNum,
                 game_running = False
         # Using these ifs to handle game states. Not the best way apparently but it'll do
         if states['sprite_gen']:
+
+            if settings['SwapSides']:
+                if player1_left:
+                    player1_left = False
+                else:
+                    player1_left = True
+            else:
+                player1_left = True
             blackhole_strike.stop()
             missile_launch.stop()
             missile_travelling.stop()
@@ -219,8 +232,12 @@ def run_the_game(play1, play2, planetNum,
             missile_1_audio_ctl = True
             # Instantiate players.
             print(settings)
-            player1 = Player1(settings, (64,64,255))
-            player2 = Player2(settings, (255,64,64))
+            if player1_left:
+                player1 = Player(settings, (64,64,255), True)
+                player2 = Player(settings, (255,64,64), False)
+            else:
+                player1 = Player(settings, (64,64,255), False)
+                player2 = Player(settings, (255,64,64), True)
             players = pygame.sprite.Group()
             players.add(player1)
             players.add(player2)
@@ -335,11 +352,18 @@ def run_the_game(play1, play2, planetNum,
             missile_done = missile1.fire_missile(screen, planets, collision_planets, settings, player1)
             if missile_done:
                 missile_launch.stop()
-                missile_travelling.stop()
                 if "black hole" in missile1.message:
+                    missile_travelling.stop()
                     blackhole_strike.play()
                 elif "planet" in missile1.message:
+                    missile_travelling.stop()
                     planet_strike.play()
+                elif "left" in missile1.message:
+                    missile_travelling.fadeout(1000)
+                elif "fuel" in  missile1.message:
+                    missile_travelling.stop()
+                    missile_puttering.play()
+                    time.sleep(1)
                 states['p1_missiles'] = False
                 states['p1_message'] = True
                 temp_screen.blit(screen, (0, 0), area_to_save)
@@ -413,11 +437,18 @@ def run_the_game(play1, play2, planetNum,
             missile_done = missile2.fire_missile(screen, planets, collision_planets, settings, player2)
             if missile_done:
                 missile_launch.stop()
-                missile_travelling.stop()
                 if "black hole" in missile2.message:
+                    missile_travelling.stop()
                     blackhole_strike.play()
                 elif "planet" in missile2.message:
+                    missile_travelling.stop()
                     planet_strike.play()
+                elif "left" in missile2.message:
+                    missile_travelling.fadeout(1000)
+                elif "fuel" in  missile2.message:
+                    missile_travelling.stop()
+                    missile_puttering.play()
+                    time.sleep(1)
                 states['p2_missiles'] = False
                 states['p2_message'] = True
                 temp_screen.blit(screen, (0, 0), area_to_save)
@@ -459,6 +490,7 @@ def run_the_game(play1, play2, planetNum,
             missile_travelling.play(loops=-1, fade_ms=1389)
             missile_1_audio_ctl = True
             missile_2_audio_ctl = True
+            travelling_fade = False
             
             states["both_missiles"] = True
             states['clear_ui_3'] = False
@@ -479,6 +511,10 @@ def run_the_game(play1, play2, planetNum,
                         blackhole_strike.play()
                     elif "planet" in missile1.message:
                         planet_strike.play()
+                    elif "left" in missile1.message:
+                        travelling_fade = True
+                    elif "fuel" in  missile1.message:
+                        missile_puttering.play()
                     if collisions1:
                         ship_strike.play()
                     missile_1_audio_ctl = False
@@ -488,20 +524,30 @@ def run_the_game(play1, play2, planetNum,
                         blackhole_strike.play()
                     elif "planet" in missile2.message:
                         planet_strike.play()
+                    elif "left" in missile2.message:
+                        travelling_fade = True
+                    elif "fuel" in  missile2.message:
+                        missile_puttering.play()
                     if collisions2:
                         ship_strike.play()
-                    missile2_travelling = False
-                missile_2_audio_ctl = False
+                    missile_2_audio_ctl = False
+                missile2_travelling = False
             
             if missile1_done and missile2_done:
-                missile_travelling.stop()
+                if travelling_fade:
+                    missile_travelling.fadeout(1000)
+                else:
+                    missile_travelling.stop()
                 states['both_missiles'] = False
                 states['both_message'] = True
                 temp_screen.blit(screen, (0, 0), area_to_save)
                 show_a_message((200,255,200), missile1.message, -30)
                 show_a_message((200,255,200), missile2.message)
             elif missile1_done and collisions2:
-                missile_travelling.stop()
+                if travelling_fade:
+                    missile_travelling.fadeout(1000)
+                else:
+                    missile_travelling.stop()
                 states['both_missiles'] = False
                 states['end_game'] = True
                 if collisions2[0].name == player2.name:
@@ -509,7 +555,10 @@ def run_the_game(play1, play2, planetNum,
                 else:
                     win_message = f"{settings['Player2Name']} has won!"
             elif missile2_done and collisions1:
-                missile_travelling.stop()
+                if travelling_fade:
+                    missile_travelling.fadeout(1000)
+                else:
+                    missile_travelling.stop()
                 states['both_missiles'] = False
                 states['end_game'] = True
                 if collisions1[0].name == player1.name:
@@ -517,7 +566,10 @@ def run_the_game(play1, play2, planetNum,
                 else:
                     win_message = f"{settings['Player1Name']} has won!"
             elif collisions1 and collisions2: 
-                missile_travelling.stop()         
+                if travelling_fade:
+                    missile_travelling.fadeout(1000)
+                else:
+                    missile_travelling.stop()        
                 states['both_missiles'] = False
                 states['end_game'] = True
                 hits = set()

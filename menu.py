@@ -16,6 +16,7 @@ def build_menu(mainmenu, settingmenu, settings, run_the_game):
     allowNakedBlackholes = settingmenu.add.toggle_switch('Allow Naked Singularities', settings['NakedBlackholes'], toggleswitch_id='nakedblackholes')
     removeTrails = settingmenu.add.toggle_switch('Erase Missile Trails', settings['RemoveTrails'], toggleswitch_id='removetrails')
     alternateTurns = settingmenu.add.toggle_switch('Alternate Turns', settings['Alternate'], toggleswitch_id='alternateturns')
+    swapSides = settingmenu.add.toggle_switch('SwapSides', settings['SwapSides'], toggleswitch_id='swapsides')
     seed = settingmenu.add.text_input('Solar System Seed: ', '', valid_chars=['1','2','3','4','5','6','7','8','9','0'], maxchar=12)
     
     about = pygame_menu.Menu('About', 640, 512, 
@@ -27,7 +28,7 @@ def build_menu(mainmenu, settingmenu, settings, run_the_game):
                         player2name, planetNumber, 
                         allowBlackholes, 
                         allowNakedBlackholes,
-                        removeTrails, alternateTurns, seed)
+                        removeTrails, alternateTurns, seed, swapSides)
     mainmenu.add.button('Settings', settings_menu, mainmenu, settingmenu)
     mainmenu.add.button('About', about_menu, mainmenu, about)
     mainmenu.add.button('Quit', pygame_menu.events.EXIT)

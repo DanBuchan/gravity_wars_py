@@ -26,12 +26,13 @@ settings = {
     'YSolarSystemDomain': (int(config['DEFAULT']['ySolarSystemDomainMin']),
                            int(config['DEFAULT']['ySolarSystemDomainMax'])),
     'MissileMaxFlightTime': int(config['DEFAULT']['MissileMaxFlightTime']),
+    'SwapSides': eval(config['DEFAULT']['SwapSides']),
     'Seed': None
 }
 
 def set_settings(player1, player2, planetNum, 
                  allowBlack, allowNakedBlack,
-                 remove, alternate, seed):
+                 remove, alternate, seed, swapSides):
     settings['Player1Name'] = player1.get_value()
     settings['Player2Name'] = player2.get_value()
     settings['MinPlanets'] = planetNum.get_value()[0]
@@ -40,6 +41,7 @@ def set_settings(player1, player2, planetNum,
     settings['NakedBlackholes'] = allowNakedBlack.get_value()
     settings['RemoveTrails'] = remove.get_value()
     settings['Alternate'] = alternate.get_value()
+    settings['SwapSides'] = swapSides.get_value()
     local_seed = None
     if len(seed.get_value()) > 0:
         local_seed = int(seed.get_value())

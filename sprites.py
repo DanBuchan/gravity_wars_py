@@ -6,9 +6,9 @@ import time
 # player class
 
 # class for player 1
-class Player1(pygame.sprite.Sprite):
-    def __init__(self, settings, canon_colour):
-        super(Player1, self).__init__()
+class Player(pygame.sprite.Sprite):
+    def __init__(self, settings, canon_colour, left_side):
+        super(Player, self).__init__()
         self.sprite_dim_x = 25
         self.sprite_dim_y = 11
         self.surf = pygame.Surface((self.sprite_dim_x,
@@ -17,44 +17,33 @@ class Player1(pygame.sprite.Sprite):
         self.rect = self.surf.get_rect()
         self.canon = pygame.Surface((5,5))
         self.canon.fill(canon_colour)
-        self.x = random.randint(settings['XPlayDomain'][0],
-                                int(settings['XPlayDomain'][1]/3)-self.sprite_dim_x)
-        self.y = random.randint(settings['YPlayDomain'][0]+30,
-                                settings['YPlayDomain'][1]-self.sprite_dim_y)
-        self.rect.topleft = (self.x, self.y)
-        #30 offset prevents player sprites overlapping with input UI
-        self.canon_x = self.x+17
-        self.canon_y = self.y+3
-        self.angle_text = '000.0000'
-        self.velocity_text = '5.0000'
-        self.angle = 0.0
-        self.velocity = 5.0
-        self.name = settings['Player1Name']
-        
-# class for player 2
-class Player2(pygame.sprite.Sprite):
-    def __init__(self, settings, canon_colour):
-        super(Player2, self).__init__()
-        self.sprite_dim_x = 25
-        self.sprite_dim_y = 11
-        self.surf = pygame.Surface((self.sprite_dim_x,
-                                    self.sprite_dim_y))
-        self.surf.fill((200, 200, 200))
-        self.canon = pygame.Surface((5,5))
-        self.canon.fill(canon_colour)
-        self.rect = self.surf.get_rect()
-        self.x = random.randint(int((settings['XPlayDomain'][1]/3)*2),
+        if left_side:
+            self.x = random.randint(settings['XPlayDomain'][0],
+                                    int(settings['XPlayDomain'][1]/3)-self.sprite_dim_x)
+            self.y = random.randint(settings['YPlayDomain'][0]+30,
+                                    settings['YPlayDomain'][1]-self.sprite_dim_y)
+            self.rect.topleft = (self.x, self.y)
+            #30 offset prevents player sprites overlapping with input UI
+            self.canon_x = self.x+17
+            self.canon_y = self.y+3
+            self.angle_text = '000.0000'
+            self.velocity_text = '5.0000'
+            self.angle = 0.0
+            self.velocity = 5.0
+            self.name = settings['Player1Name']
+        else:
+            self.x = random.randint(int((settings['XPlayDomain'][1]/3)*2),
                                 settings['XPlayDomain'][1]-self.sprite_dim_x)
-        self.y = random.randint(settings['YPlayDomain'][0]+30,
-                                settings['YPlayDomain'][1]-self.sprite_dim_y)
-        self.rect.topleft = (self.x, self.y)
-        self.canon_x = self.x+3
-        self.canon_y = self.y+3
-        self.angle_text = '180.0000'
-        self.velocity_text = '5.0000'
-        self.angle = 180.0
-        self.velocity = 5.0
-        self.name = settings['Player2Name']
+            self.y = random.randint(settings['YPlayDomain'][0]+30,
+                                    settings['YPlayDomain'][1]-self.sprite_dim_y)
+            self.rect.topleft = (self.x, self.y)
+            self.canon_x = self.x+3
+            self.canon_y = self.y+3
+            self.angle_text = '180.0000'
+            self.velocity_text = '5.0000'
+            self.angle = 180.0
+            self.velocity = 5.0
+            self.name = settings['Player2Name']
 
 # class for planets
 class Planet(pygame.sprite.Sprite):
