@@ -65,7 +65,12 @@ Executable packages coming soon.
 
 ## Audio Credits
 
+Gravity Wars Redux makes use of the following CC and Non-Commercially licences audio samples 
 
+Huge Explosion Part 2 - Impact by bevibeldesign -- https://freesound.org/s/366088/ -- License: Creative Commons 0
+woosh.wav by ReadeOnly -- https://freesound.org/s/186956/ -- License: Creative Commons 0
+ROCKImpt_Impact Of A Heavy Boulder.Designed x2_EM.wav by newlocknew -- https://freesound.org/s/667240/ -- License: Attribution NonCommercial 4.0
+Whoop by cabled_mess -- https://freesound.org/s/361122/ -- License: Creative Commons 0
 
 ## TODO
 
