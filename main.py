@@ -35,7 +35,6 @@ missile_puttering = pygame.mixer.Sound("./audio/missile_puttering.mp3")
 planet_strike = pygame.mixer.Sound("./audio/planet_strike.mp3")
 ship_strike = pygame.mixer.Sound("./audio/ship_strike.mp3")
 
-
 blackhole_strike.set_volume(0.6)
 missile_launch.set_volume(1)
 missile_travelling.set_volume(0.5)
@@ -98,7 +97,7 @@ def run_the_game(play1, play2, planetNum,
                  remove, alternate, seed, swapSides, maxMass)
     if not settings["Seed"]:
         settings["Seed"] = int(''.join(str(random.randint(0,9)) for _ in range(12)))
-    settings["Seed"] = 331357458685
+    #settings["Seed"] = 331357458685
     random.seed(int(settings["Seed"]))
     #712812482802
     
@@ -361,10 +360,9 @@ def run_the_game(play1, play2, planetNum,
                     planet_strike.play()
                 elif "left" in missile1.message:
                     missile_travelling.fadeout(1000)
-                elif "fuel" in  missile1.message:
+                elif "puttering" in  missile1.message:
                     missile_travelling.stop()
                     missile_puttering.play()
-                    time.sleep(1)
                 states['p1_missiles'] = False
                 states['p1_message'] = True
                 temp_screen.blit(screen, (0, 0), area_to_save)
@@ -446,10 +444,9 @@ def run_the_game(play1, play2, planetNum,
                     planet_strike.play()
                 elif "left" in missile2.message:
                     missile_travelling.fadeout(1000)
-                elif "fuel" in  missile2.message:
+                elif "puttering" in  missile2.message:
                     missile_travelling.stop()
                     missile_puttering.play()
-                    time.sleep(1)
                 states['p2_missiles'] = False
                 states['p2_message'] = True
                 temp_screen.blit(screen, (0, 0), area_to_save)
@@ -514,7 +511,7 @@ def run_the_game(play1, play2, planetNum,
                         planet_strike.play()
                     elif "left" in missile1.message:
                         travelling_fade = True
-                    elif "fuel" in  missile1.message:
+                    elif "puttering" in  missile1.message:
                         missile_puttering.play()
                     if collisions1:
                         ship_strike.play()
@@ -527,7 +524,7 @@ def run_the_game(play1, play2, planetNum,
                         planet_strike.play()
                     elif "left" in missile2.message:
                         travelling_fade = True
-                    elif "fuel" in  missile2.message:
+                    elif "puttering" in  missile2.message:
                         missile_puttering.play()
                     if collisions2:
                         ship_strike.play()

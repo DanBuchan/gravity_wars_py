@@ -200,11 +200,12 @@ class Missile(pygame.sprite.Sprite):
                 collisions[0].mass = collisions[0].mass+(player.velocity*4)
                 if collisions[0].mass > settings['MaxMass']:
                     collisions[0].mass = settings['MaxMass']
-                print(collisions[0].mass)
                 sprite_type = "black hole"
             self.message = f"{player.name}'s missile hit a {sprite_type}"
             missile_done = True
         flight_time = time.time() - self.missile_start_time
+        if flight_time*1000 >= (settings['MissileMaxFlightTime']*1000)-1500:
+            self.message = f"puttering"
         # if flight time == 8000-1500, we should signal to stop travelling
         # sample and play the puttering sample
         if flight_time > settings['MissileMaxFlightTime']:
