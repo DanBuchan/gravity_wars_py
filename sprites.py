@@ -206,8 +206,6 @@ class Missile(pygame.sprite.Sprite):
         flight_time = time.time() - self.missile_start_time
         if flight_time*1000 >= (settings['MissileMaxFlightTime']*1000)-1500:
             self.message = f"puttering"
-        # if flight time == 8000-1500, we should signal to stop travelling
-        # sample and play the puttering sample
         if flight_time > settings['MissileMaxFlightTime']:
             self.message = f"{player.name}'s missile ran out of fuel"
             missile_done = True
