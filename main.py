@@ -50,8 +50,7 @@ SHIP_STRIKE = pygame.USEREVENT + 3
 BLACKHOLE_STRIKE = pygame.USEREVENT + 4
 MISSILE_PUTTERING = pygame.USEREVENT + 5
 MISSILE_FADE = pygame.USEREVENT + 6
-RETURN_EVENT = pygame.event.Event(pygame.locals.KEYDOWN, unicode="/n",
-                                  key=K_RETURN, mod=pygame.locals.KMOD_NONE)
+NEXT_STATE = pygame.USEREVENT + 7
 
 screen = pygame.display.set_mode([settings['ScreenWidth'],
                                   settings['ScreenHeight']])
@@ -153,7 +152,9 @@ def run_the_game(play1, play2, planetNum,
 
               'end_wait': False,
               }
+    frames = 0
     while game_running:
+        frames += 1
         # Look at every event in the queue
         events = pygame.event.get()
         for event in events:
@@ -266,6 +267,19 @@ def run_the_game(play1, play2, planetNum,
                     missile1_travelling = True
                 if not missile2_travelling:
                     missile2_travelling = True
+            elif event.type == NEXT_STATE:
+                if states['p1_message']:
+                    states['p1_message'] = False
+                    states['p2_widget_gen'] = True
+                    screen.blit(temp_screen, (0, 0), area_to_save)
+                if states['p2_message']:
+                    screen.blit(temp_screen, (0, 0), area_to_save)
+                    states['p2_message'] = False
+                    states['p1_widget_gen'] = True
+                if states['both_message']:
+                    screen.blit(temp_screen, (0, 0), area_to_save)
+                    states['both_message'] = False
+                    states['p1_widget_gen'] = True
                 
         # Using these ifs to handle game states. Not the best way apparently but it'll do
         if states['sprite_gen']:
@@ -404,13 +418,16 @@ def run_the_game(play1, play2, planetNum,
                 states['p1_message'] = True
                 temp_screen.blit(screen, (0, 0), area_to_save)
                 show_a_message((200,255,200), missile1.message)
-                
+                missile1_travelling = False
+                missile2_travelling = False
             collisions = pygame.sprite.spritecollide(missile1, players, 
                                                      False)
             if collisions:
                 missile_travelling.stop()
                 missile_launch.stop()
                 ship_strike.play()
+                missile1_travelling = False
+                missile2_travelling = False
                 states['p1_missiles'] = False
                 states['end_game'] = True
                 if collisions[0].name == player1.name:
@@ -472,6 +489,8 @@ def run_the_game(play1, play2, planetNum,
                 states['p2_message'] = True
                 temp_screen.blit(screen, (0, 0), area_to_save)
                 show_a_message((200,255,200), missile2.message)
+                missile1_travelling = False
+                missile2_travelling = False
                 # if not settings['RemoveTrails']:
                 #     temp_screen.blit(screen, (0, 0), area_to_save)
 
@@ -483,6 +502,8 @@ def run_the_game(play1, play2, planetNum,
                 ship_strike.play()
                 states['p2_missiles'] = False
                 states['end_game'] = True
+                missile1_travelling = False
+                missile2_travelling = False
                 if collisions[0].name == player2.name:
                     win_message = f"{settings['Player1Name']} has won!"
                 else:
@@ -561,7 +582,6 @@ def run_the_game(play1, play2, planetNum,
             temp_screen.blit(screen, (0, 0), area_to_save)
             show_a_message((200,255,200), win_message)
             show_a_message((200,255,200), f"Seed: {settings['Seed']}", 25)
-            #time.sleep(2)
             states['end_game'] = False
             states['end_wait'] = True
             player1 = None
