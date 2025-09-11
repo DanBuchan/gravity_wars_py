@@ -95,6 +95,7 @@ def make_a_missile(player, colour):
     missile.set_starting_location(player)
     missile.missile_start_time = time.time()
     screen.blit(missile.surf, (missile.x, missile.y))
+    pygame.event.post(pygame.event.Event(MISSILE_LAUNCH))
     return missile
             
 def run_the_game(play1, play2, planetNum, 
@@ -219,6 +220,10 @@ def run_the_game(play1, play2, planetNum,
                         states['p1_message'] = False
                         states['p2_widget_gen'] = True
                         screen.blit(temp_screen, (0, 0), area_to_save)
+                    if states['p2_message']:
+                        screen.blit(temp_screen, (0, 0), area_to_save)
+                        states['p2_message'] = False
+                        states['p1_widget_gen'] = True     
                     
             # Did the user click the window close button? If so, stop the loop.
             elif event.type == QUIT:
@@ -373,7 +378,6 @@ def run_the_game(play1, play2, planetNum,
         if states['clear_ui']:
             screen.blit(temp_screen, (0, 0), area_to_save)
             missile1 = make_a_missile(player1,(190, 190, 255))
-            pygame.event.post(pygame.event.Event(MISSILE_LAUNCH))
             states["p1_missiles"] = True
             states['clear_ui'] = False
 
@@ -442,8 +446,6 @@ def run_the_game(play1, play2, planetNum,
             velocity_dialogue.hide()
             screen.blit(temp_screen, (0, 0), area_to_save)
             missile2 = make_a_missile(player2,(255, 200, 200))
-            missile_launch.play()
-            missile_travelling.play(loops=-1, fade_ms=1389)
             states["p2_missiles"] = True
             states['clear_ui_2'] = False
 
@@ -451,17 +453,6 @@ def run_the_game(play1, play2, planetNum,
             missile_done = missile2.fire_missile(screen, planets, collision_planets, settings, player2)
             if missile_done:
                 missile_launch.stop()
-                if "black hole" in missile2.message:
-                    missile_travelling.stop()
-                    blackhole_strike.play()
-                elif "planet" in missile2.message:
-                    missile_travelling.stop()
-                    planet_strike.play()
-                elif "left" in missile2.message:
-                    missile_travelling.fadeout(1000)
-                elif "puttering" in  missile2.message:
-                    missile_travelling.stop()
-                    missile_puttering.play()
                 states['p2_missiles'] = False
                 states['p2_message'] = True
                 temp_screen.blit(screen, (0, 0), area_to_save)
@@ -484,10 +475,7 @@ def run_the_game(play1, play2, planetNum,
             pygame.display.update()
 
         if states['p2_message']:
-            time.sleep(1)
-            screen.blit(temp_screen, (0, 0), area_to_save)
-            states['p2_message'] = False
-            states['p1_widget_gen'] = True
+            pass
 
         if states['clear_ui_3']:
             player2_id.hide()
