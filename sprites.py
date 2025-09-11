@@ -116,9 +116,15 @@ class Planet(pygame.sprite.Sprite):
         
 # class for Missiles
 class Missile(pygame.sprite.Sprite):
-    def __init__(self, player, trail_colour):
+    def __init__(self, player, trail_colour, MISSILE_PUTTERING,
+                 BLACKHOLE_STRIKE, PLANET_STRIKE, MISSILE_FADE):
         super(Missile, self).__init__() #
         # missile should start at the centre of the canon
+        self.audio_ctl = True
+        self.MISSILE_PUTTERING = MISSILE_PUTTERING
+        self.BLACKHOLE_STRIKE = BLACKHOLE_STRIKE
+        self.PLANET_STRIKE = PLANET_STRIKE
+        self.MISSILE_FADE = MISSILE_FADE
         self.x = player.canon_x+2
         self.y = player.canon_y+1
         self.ar = math.pi * (90 - player.angle) / 180
@@ -201,15 +207,28 @@ class Missile(pygame.sprite.Sprite):
                 if collisions[0].mass > settings['MaxMass']:
                     collisions[0].mass = settings['MaxMass']
                 sprite_type = "black hole"
+                if self.audio_ctl:
+                    pygame.event.post(pygame.event.Event(self.BLACKHOLE_STRIKE))
+                    self.audio_ctl = False
+            else:
+                if self.audio_ctl:
+                    pygame.event.post(pygame.event.Event(self.PLANET_STRIKE))
+                    self.audio_ctl = False 
             self.message = f"{player.name}'s missile hit a {sprite_type}"
             missile_done = True
+
         flight_time = time.time() - self.missile_start_time
         if flight_time*1000 >= (settings['MissileMaxFlightTime']*1000)-1500:
-            self.message = f"puttering"
+            if self.audio_ctl:
+                pygame.event.post(pygame.event.Event(self.MISSILE_PUTTERING))
+                self.audio_ctl = False
         if flight_time > settings['MissileMaxFlightTime']:
             self.message = f"{player.name}'s missile ran out of fuel"
             missile_done = True
         if not self.check_bounds(settings):
+            if self.audio_ctl:
+                pygame.event.post(pygame.event.Event(self.MISSILE_FADE))
+                self.audio_ctl = False 
             self.message = f"{player.name}'s missile left solar system"
             missile_done = True
         return missile_done

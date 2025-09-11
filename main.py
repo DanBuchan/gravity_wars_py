@@ -18,7 +18,9 @@ from pygame.locals import (
     K_RETURN,
 )
 
+
 pygame.init()
+pygame.mixer.pre_init(44100, -16, 2, 512)
 pygame.mixer.init()
 pygame.display.set_caption('Gravity Wars Redux')
 clock = pygame.time.Clock()
@@ -41,6 +43,13 @@ missile_travelling.set_volume(0.5)
 missile_puttering.set_volume(0.5)
 planet_strike.set_volume(1)
 ship_strike.set_volume(1)
+
+MISSILE_LAUNCH = pygame.USEREVENT + 1
+PLANET_STRIKE = pygame.USEREVENT + 2
+SHIP_STRIKE = pygame.USEREVENT + 3
+BLACKHOLE_STRIKE = pygame.USEREVENT + 4
+MISSILE_PUTTERING = pygame.USEREVENT + 5
+MISSILE_FADE = pygame.USEREVENT + 6
 
 screen = pygame.display.set_mode([settings['ScreenWidth'],
                                   settings['ScreenHeight']])
@@ -81,7 +90,8 @@ def show_a_message(colour, message, adjustment=0):
     pygame.display.flip()
 
 def make_a_missile(player, colour):
-    missile = Missile(player, colour)
+    missile = Missile(player, colour, MISSILE_PUTTERING,
+                      BLACKHOLE_STRIKE, PLANET_STRIKE, MISSILE_FADE)
     missile.set_starting_location(player)
     missile.missile_start_time = time.time()
     screen.blit(missile.surf, (missile.x, missile.y))
@@ -205,6 +215,11 @@ def run_the_game(play1, play2, planetNum,
                     if states['end_wait']:
                         states['end_wait'] = False
                         states['sprite_gen'] = True
+                    if states['p1_message']:
+                        states['p1_message'] = False
+                        states['p2_widget_gen'] = True
+                        screen.blit(temp_screen, (0, 0), area_to_save)
+                    
             # Did the user click the window close button? If so, stop the loop.
             elif event.type == QUIT:
                 blackhole_strike.stop()
@@ -213,6 +228,21 @@ def run_the_game(play1, play2, planetNum,
                 planet_strike.stop()
                 ship_strike.stop()
                 game_running = False
+            elif event.type == MISSILE_LAUNCH:
+                missile_launch.play()
+                missile_travelling.play(loops=-1, fade_ms=1389)
+            elif event.type == PLANET_STRIKE:
+                missile_travelling.stop()
+                planet_strike.play()
+            elif event.type == MISSILE_FADE:
+                missile_travelling.fadeout(1000)
+            elif event.type == MISSILE_PUTTERING:
+                missile_travelling.stop()
+                missile_puttering.play()
+            elif event.type == BLACKHOLE_STRIKE:
+                missile_travelling.stop()
+                blackhole_strike.play()
+                
         # Using these ifs to handle game states. Not the best way apparently but it'll do
         if states['sprite_gen']:
 
@@ -343,8 +373,7 @@ def run_the_game(play1, play2, planetNum,
         if states['clear_ui']:
             screen.blit(temp_screen, (0, 0), area_to_save)
             missile1 = make_a_missile(player1,(190, 190, 255))
-            missile_launch.play()
-            missile_travelling.play(loops=-1, fade_ms=1389)
+            pygame.event.post(pygame.event.Event(MISSILE_LAUNCH))
             states["p1_missiles"] = True
             states['clear_ui'] = False
 
@@ -352,17 +381,6 @@ def run_the_game(play1, play2, planetNum,
             missile_done = missile1.fire_missile(screen, planets, collision_planets, settings, player1)
             if missile_done:
                 missile_launch.stop()
-                if "black hole" in missile1.message:
-                    missile_travelling.stop()
-                    blackhole_strike.play()
-                elif "planet" in missile1.message:
-                    missile_travelling.stop()
-                    planet_strike.play()
-                elif "left" in missile1.message:
-                    missile_travelling.fadeout(1000)
-                elif "puttering" in  missile1.message:
-                    missile_travelling.stop()
-                    missile_puttering.play()
                 states['p1_missiles'] = False
                 states['p1_message'] = True
                 temp_screen.blit(screen, (0, 0), area_to_save)
@@ -387,10 +405,7 @@ def run_the_game(play1, play2, planetNum,
             #.   before toggling
  
         if states['p1_message']:
-            time.sleep(1)
-            screen.blit(temp_screen, (0, 0), area_to_save)
-            states['p1_message'] = False
-            states['p2_widget_gen'] = True
+            pass
           
         if states['p2_widget_gen']:
             player1_id.hide()
